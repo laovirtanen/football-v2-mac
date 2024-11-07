@@ -6,8 +6,8 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import apiClient from "../api/apiClient";
 import { Card } from "react-native-paper";
@@ -37,6 +37,15 @@ export default function FixturesScreen({ navigation }) {
     }
   };
 
+  const formatDateTime = (dateString) => {
+    if (!dateString) return "Date not available";
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} - ${date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  };
+
   const renderItem = ({ item }) => (
     <Card
       style={styles.card}
@@ -44,22 +53,38 @@ export default function FixturesScreen({ navigation }) {
         navigation.navigate("MatchDetails", { fixtureId: item.fixture_id })
       }
     >
-      <Card.Content>
-        <Text style={styles.date}>
-          {new Date(item.date).toLocaleDateString()}
-        </Text>
-        <Text style={styles.teams}>
-          {`${item.home_team?.name ?? "Home Team Unknown"} vs ${
-            item.away_team?.name ?? "Away Team Unknown"
-          }`}
-        </Text>
-      </Card.Content>
+      <View style={styles.cardContent}>
+        <View style={styles.teamContainer}>
+          <View style={styles.team}>
+            <Image
+              source={{ uri: item.home_team?.logo }}
+              style={styles.teamLogo}
+            />
+            <Text style={styles.teamName}>
+              {item.home_team?.name ?? "Home Team"}
+            </Text>
+          </View>
+          <Text style={styles.vsText}>vs</Text>
+          <View style={styles.team}>
+            <Image
+              source={{ uri: item.away_team?.logo }}
+              style={styles.teamLogo}
+            />
+            <Text style={styles.teamName}>
+              {item.away_team?.name ?? "Away Team"}
+            </Text>
+          </View>
+        </View>
+        <Text style={styles.date}>{formatDateTime(item.date)}</Text>
+      </View>
     </Card>
   );
 
   if (loading) {
     return (
-      <ActivityIndicator size="large" style={styles.loader} color="#1E90FF" />
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#1E90FF" />
+      </View>
     );
   }
 
@@ -69,6 +94,7 @@ export default function FixturesScreen({ navigation }) {
         data={fixtures}
         keyExtractor={(item) => item.fixture_id.toString()}
         renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
@@ -77,22 +103,59 @@ export default function FixturesScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: "#f0f2f5",
   },
   loader: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#f0f2f5",
+  },
+  listContent: {
+    padding: 16,
   },
   card: {
-    marginBottom: 10,
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: "hidden",
+    elevation: 4,
+    backgroundColor: "#fff",
+  },
+  cardContent: {
+    padding: 16,
+  },
+  teamContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  team: {
+    alignItems: "center",
+    flex: 4,
+  },
+  teamLogo: {
+    width: 60,
+    height: 60,
+    marginBottom: 8,
+    resizeMode: "contain",
+  },
+  teamName: {
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#333",
+  },
+  vsText: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#888",
+    textAlign: "center",
   },
   date: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  teams: {
-    fontSize: 18,
-    marginTop: 5,
+    marginTop: 12,
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
   },
 });
