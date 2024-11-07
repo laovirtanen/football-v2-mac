@@ -27,6 +27,7 @@ export default function FixturesScreen({ navigation }) {
       const data = await apiClient.get(
         `/fixtures/?league_id=${leagueId}&status=NS&limit=20`
       );
+      console.log("Fetched fixtures:", data);
       setFixtures(data);
     } catch (error) {
       console.error("Error fetching fixtures:", error);
@@ -48,7 +49,9 @@ export default function FixturesScreen({ navigation }) {
           {new Date(item.date).toLocaleDateString()}
         </Text>
         <Text style={styles.teams}>
-          {`${item.home_team.name} vs ${item.away_team.name}`}
+          {`${item.home_team?.name ?? "Home Team Unknown"} vs ${
+            item.away_team?.name ?? "Away Team Unknown"
+          }`}
         </Text>
       </Card.Content>
     </Card>
