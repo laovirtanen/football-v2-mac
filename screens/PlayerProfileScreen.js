@@ -40,7 +40,7 @@ export default function PlayerProfileScreen({ route }) {
 
   if (loading) {
     return (
-      <ActivityIndicator size="large" style={styles.loader} color="#1E90FF" />
+      <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
     );
   }
 

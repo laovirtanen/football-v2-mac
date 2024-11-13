@@ -84,7 +84,8 @@ export default function HeadToHeadScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {loadingTeams ? (
-        <ActivityIndicator size="large" style={styles.loader} color="#1E90FF" />
+        <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
+
       ) : (
         <>
           <Text style={styles.label}>Select Team 1:</Text>
@@ -127,7 +128,7 @@ export default function HeadToHeadScreen({ navigation }) {
 
           {loadingFixtures ? (
             <ActivityIndicator
-              size="large"
+              size={24}
               style={styles.loader}
               color="#1E90FF"
             />

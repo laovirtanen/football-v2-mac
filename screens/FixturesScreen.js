@@ -9,7 +9,7 @@ import {
   Alert,
   Image,
 } from "react-native";
-import apiClient from "../api/apiClient";
+import apiClient from "../api/apiClient"
 import { Card } from "react-native-paper";
 
 export default function FixturesScreen({ navigation }) {
@@ -83,7 +83,8 @@ export default function FixturesScreen({ navigation }) {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#1E90FF" />
+        <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
+
       </View>
     );
   }

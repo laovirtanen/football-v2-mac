@@ -73,7 +73,7 @@ export default function PlayerRankingsScreen({ navigation }) {
         <Picker.Item label="Red Cards" value="red_cards" />
       </Picker>
       {loading ? (
-        <ActivityIndicator size="large" style={styles.loader} color="#1E90FF" />
+        <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
       ) : (
         <FlatList
           data={rankings}
