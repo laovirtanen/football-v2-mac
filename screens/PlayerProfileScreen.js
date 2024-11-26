@@ -10,9 +10,13 @@ import {
   ScrollView,
 } from "react-native";
 import { Avatar, Card } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import apiClient from "../api/apiClient";
+import createStyles from "../styles"; // Adjust the path as necessary
 
 export default function PlayerProfileScreen({ route }) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
   const { playerId } = route.params;
   const [player, setPlayer] = useState(null);
   const [statistics, setStatistics] = useState(null);
@@ -39,15 +43,13 @@ export default function PlayerProfileScreen({ route }) {
   };
 
   if (loading) {
-    return (
-      <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
-    );
+    return <ActivityIndicator size={24} style={styles.loader} color={colors.primary} />;
   }
 
   if (!player) {
     return (
       <View style={styles.container}>
-        <Text>Error loading player details.</Text>
+        <Text style={{ color: colors.text }}>Error loading player details.</Text>
       </View>
     );
   }
@@ -58,16 +60,16 @@ export default function PlayerProfileScreen({ route }) {
         <Card.Content style={styles.cardContent}>
           <Avatar.Image
             size={100}
-            source={{ uri: player.photo || "default_photo_url" }}
+            source={{ uri: player.photo || "https://via.placeholder.com/100" }}
             style={styles.avatar}
           />
           <Text style={styles.playerName}>{player.name}</Text>
-          <Text style={styles.info}>Age: {player.age}</Text>
-          <Text style={styles.info}>Nationality: {player.nationality}</Text>
-          <Text style={styles.info}>
+          <Text style={styles.infoText}>Age: {player.age}</Text>
+          <Text style={styles.infoText}>Nationality: {player.nationality}</Text>
+          <Text style={styles.infoText}>
             Team: {player.team ? player.team.name : "N/A"}
           </Text>
-          <Text style={styles.info}>Position: {player.position}</Text>
+          <Text style={styles.infoText}>Position: {player.position}</Text>
         </Card.Content>
       </Card>
 
@@ -132,7 +134,7 @@ export default function PlayerProfileScreen({ route }) {
           <View style={styles.statRow}>
             <Text style={styles.statLabel}>Pass Accuracy:</Text>
             <Text style={styles.statValue}>
-              {statistics.passes_accuracy || "0"}
+              {statistics.passes_accuracy || "0"}%
             </Text>
           </View>
 
@@ -238,68 +240,3 @@ export default function PlayerProfileScreen({ route }) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    alignItems: "center",
-    paddingBottom: 20,
-    backgroundColor: "#f5f5f5",
-  },
-  loader: {
-    marginTop: 20,
-  },
-  card: {
-    width: "90%",
-    marginTop: 20,
-    alignItems: "center",
-    paddingVertical: 20,
-  },
-  cardContent: {
-    alignItems: "center",
-  },
-  avatar: {
-    marginBottom: 16,
-    backgroundColor: "transparent",
-  },
-  playerName: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  info: {
-    fontSize: 18,
-    marginVertical: 4,
-  },
-  statsContainer: {
-    marginTop: 20,
-    width: "90%",
-    paddingHorizontal: 16,
-  },
-  statsTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 16,
-    marginBottom: 8,
-    color: "#1E90FF",
-  },
-  statRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: 4,
-  },
-  statLabel: {
-    fontSize: 16,
-    color: "#555",
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});

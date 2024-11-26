@@ -1,22 +1,33 @@
 // screens/PlayerRankingsScreen.js
+
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   FlatList,
-  StyleSheet,
   ActivityIndicator,
   Alert,
-  TouchableOpacity, // Ensure this is imported
+  TouchableOpacity,
+  Image,
+  Text,
 } from "react-native";
 import apiClient from "../api/apiClient";
-import { Picker } from "@react-native-picker/picker";
-import { Avatar } from "react-native-paper";
+import DropDownPicker from "react-native-dropdown-picker";
+import { useTheme } from "react-native-paper";
+import createStyles from "../styles";
 
 export default function PlayerRankingsScreen({ navigation }) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
   const [rankings, setRankings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statType, setStatType] = useState("goals");
+  const [statItems, setStatItems] = useState([
+    { label: "Goals", value: "goals" },
+    { label: "Assists", value: "assists" },
+    { label: "Yellow Cards", value: "yellow_cards" },
+    { label: "Red Cards", value: "red_cards" },
+  ]);
+  const [statOpen, setStatOpen] = useState(false);
 
   const leagueId = 39; // Example league ID
   const seasonYear = 2024; // Example season year
@@ -42,81 +53,68 @@ export default function PlayerRankingsScreen({ navigation }) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={styles.rankingsItemContainer}
       onPress={() =>
         navigation.navigate("PlayerProfile", {
-          playerId: item.player.player_id,
+          playerId: item.player?.player_id,
         })
       }
     >
-      <Text style={styles.rank}>{item.rank}</Text>
-      <Avatar.Image
-        size={50}
-        source={{ uri: item.player.photo }}
-        style={styles.avatar}
+      <Text style={styles.rankingsRank}>{item.rank ?? 'N/A'}</Text>
+      <Image
+        source={{ uri: item.player?.photo }}
+        style={styles.rankingsAvatar}
       />
-      <Text style={styles.playerName}>{item.player.name}</Text>
-      <Text style={styles.statValue}>{item.stat_value}</Text>
+      <View style={styles.rankingsPlayerInfo}>
+        <Text style={styles.rankingsPlayerName}>
+          {item.player?.name ?? 'Unknown Player'}
+        </Text>
+        <Text style={styles.rankingsTeamName}>
+          {item.player?.team?.name ?? 'Unknown Team'}
+        </Text>
+      </View>
+      <Text style={styles.rankingsStatValue}>{item.stat_value ?? '0'}</Text>
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={statType}
-        onValueChange={(itemValue) => setStatType(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Goals" value="goals" />
-        <Picker.Item label="Assists" value="assists" />
-        <Picker.Item label="Yellow Cards" value="yellow_cards" />
-        <Picker.Item label="Red Cards" value="red_cards" />
-      </Picker>
+      <DropDownPicker
+        open={statOpen}
+        value={statType}
+        items={statItems}
+        setOpen={setStatOpen}
+        setValue={setStatType}
+        setItems={setStatItems}
+        placeholder="Select a stat"
+        containerStyle={styles.dropDownPicker}
+        onChangeValue={(value) => setStatType(value)}
+        zIndex={1000}
+        zIndexInverse={3000}
+        style={styles.dropDownStyle}
+        dropDownContainerStyle={styles.dropDownContainerStyle}
+        textStyle={styles.dropDownTextStyle}
+        labelStyle={styles.dropDownLabelStyle}
+        selectedItemLabelStyle={styles.dropDownSelectedLabelStyle}
+        arrowIconStyle={styles.dropDownArrowIconStyle}
+        tickIconStyle={styles.dropDownTickIconStyle}
+        listItemContainerStyle={{ backgroundColor: colors.surface }}
+        listItemLabelStyle={{ color: colors.text }}
+      />
       {loading ? (
-        <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
+        <ActivityIndicator
+          size={24}
+          style={styles.loader}
+          color={colors.primary}
+        />
       ) : (
         <FlatList
           data={rankings}
-          keyExtractor={(item) => item.player.player_id.toString()}
+          keyExtractor={(item) => item.player?.player_id?.toString() ?? item.rank.toString()}
           renderItem={renderItem}
         />
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  picker: {
-    marginBottom: 16,
-  },
-  loader: {
-    marginTop: 20,
-  },
-  itemContainer: {
-    flexDirection: "row",
-    paddingVertical: 8,
-    alignItems: "center",
-  },
-  rank: {
-    width: 30,
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  avatar: {
-    backgroundColor: "transparent",
-    marginRight: 10,
-  },
-  playerName: {
-    flex: 1,
-    fontSize: 16,
-  },
-  statValue: {
-    width: 50,
-    textAlign: "right",
-    fontSize: 16,
-  },
-});

@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   ActivityIndicator,
   FlatList,
   Alert,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import apiClient from "../api/apiClient";
@@ -26,7 +27,7 @@ export default function HeadToHeadScreen({ navigation }) {
 
   const fetchTeams = async () => {
     try {
-      const data = await apiClient.get("/teams/?limit=1000"); // Adjust limit as needed
+      const data = await apiClient.get("/teams/?limit=1000");
       setTeams(data);
     } catch (error) {
       console.error("Error fetching teams:", error);
@@ -85,7 +86,6 @@ export default function HeadToHeadScreen({ navigation }) {
     <View style={styles.container}>
       {loadingTeams ? (
         <ActivityIndicator size={24} style={styles.loader} color="#1E90FF" />
-
       ) : (
         <>
           <Text style={styles.label}>Select Team 1:</Text>
@@ -177,6 +177,8 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 10,
+    elevation: 2,
+    borderRadius: 8,
   },
   fixtureDate: {
     fontSize: 14,
