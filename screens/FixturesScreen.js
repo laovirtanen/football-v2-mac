@@ -11,13 +11,17 @@ import {
   Image,
 } from 'react-native';
 import apiClient from '../api/apiClient';
-import DropDownPicker from 'react-native-dropdown-picker';
+// Removed DropDownPicker import
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import createStyles from '../styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
 import { IconButton } from 'react-native-paper';
 
 export default function FixturesScreen({ navigation }) {
@@ -38,27 +42,22 @@ export default function FixturesScreen({ navigation }) {
   const [leagues, setLeagues] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [leagueOpen, setLeagueOpen] = useState(false);
-  const [leagueItems, setLeagueItems] = useState([]);
+  // Removed DropDownPicker related states
+  // const [leagueOpen, setLeagueOpen] = useState(false);
+  // const [leagueItems, setLeagueItems] = useState([]);
 
-  // Define fetchLeagues function before useEffect
+  // Fetch leagues and include country flags
   const fetchLeagues = async () => {
     try {
       const data = await apiClient.get('/leagues/');
       setLeagues(data);
-      setLeagueItems(
-        data.map((league) => ({
-          label: league.name,
-          value: league.league_id,
-        }))
-      );
     } catch (error) {
       console.error('Error fetching leagues:', error);
       Alert.alert('Error', 'Unable to fetch leagues.');
     }
   };
 
-  // Define fetchFixtures function before useEffect
+  // Fetch fixtures for the selected league and date
   const fetchFixtures = async () => {
     setLoading(true);
     try {
@@ -113,8 +112,16 @@ export default function FixturesScreen({ navigation }) {
     hideDatePicker();
   };
 
+  const handleLeagueSelect = (selectedLeagueId) => {
+    setLeagueId(selectedLeagueId);
+  };
+
   const renderItem = ({ item }) => (
-    <Animatable.View animation="fadeInUp" delay={200} style={styles.fixtureCardWrapper}>
+    <Animatable.View
+      animation="fadeInUp"
+      delay={200}
+      style={styles.fixtureCardWrapper}
+    >
       <TouchableOpacity
         style={styles.fixtureCard}
         onPress={() =>
@@ -166,31 +173,49 @@ export default function FixturesScreen({ navigation }) {
       style={styles.background}
     >
       <SafeAreaView style={styles.safeArea}>
-        <Animatable.View animation="fadeInDown" delay={200} style={styles.header}>
+        {/* Header Section */}
+        <Animatable.View
+          animation="fadeInDown"
+          delay={200}
+          style={styles.headerContainer}
+        >
           <Text style={styles.sectionTitle}>Fixtures</Text>
         </Animatable.View>
-        <View style={styles.dropDownWrapper}>
-          <DropDownPicker
-            open={leagueOpen}
-            value={leagueId}
-            items={leagueItems}
-            setOpen={setLeagueOpen}
-            setValue={setLeagueId}
-            setItems={setLeagueItems}
-            placeholder="Select a league"
-            onChangeValue={(value) => setLeagueId(value)}
-            searchable
-            searchablePlaceholder="Search leagues..."
-            zIndex={1000}
-            zIndexInverse={3000}
-            style={styles.dropDownStyle}
-            dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.dropDownTextStyle}
-            labelStyle={styles.dropDownLabelStyle}
-            selectedItemLabelStyle={styles.dropDownSelectedLabelStyle}
-            arrowIconStyle={styles.dropDownArrowIconStyle}
-            tickIconStyle={styles.dropDownTickIconStyle}
-          />
+
+        <View style={styles.container}>
+          {/* League Selector */}
+          <View style={styles.leagueSelectorContainer}>
+            {leagues.map((league) => (
+              <TouchableOpacity
+                key={league.league_id}
+                style={[
+                  styles.leagueButton,
+                  league.league_id === leagueId && styles.leagueButtonSelected,
+                ]}
+                onPress={() => handleLeagueSelect(league.league_id)}
+              >
+                <View style={styles.leagueButtonContent}>
+                  {league.country && league.country.flag ? (
+                    <Image
+                      source={{ uri: league.country.flag }}
+                      style={styles.leagueFlag}
+                    />
+                  ) : null}
+                  <Text
+                    style={[
+                      styles.leagueButtonText,
+                      league.league_id === leagueId &&
+                        styles.leagueButtonTextSelected,
+                    ]}
+                  >
+                    {league.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Date Picker */}
           <TouchableOpacity
             style={styles.datePickerContainer}
             onPress={showDatePicker}
@@ -209,6 +234,7 @@ export default function FixturesScreen({ navigation }) {
             headerTextIOS="Select a date"
             textColor="#ff416c"
           />
+
           {loading ? (
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#ff416c" />
@@ -221,7 +247,9 @@ export default function FixturesScreen({ navigation }) {
               contentContainerStyle={{ paddingBottom: 20 }}
             />
           ) : (
-            <Text style={styles.noFixturesText}>No fixtures found for this date.</Text>
+            <Text style={styles.noFixturesText}>
+              No fixtures found for this date.
+            </Text>
           )}
         </View>
       </SafeAreaView>

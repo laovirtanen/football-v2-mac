@@ -11,12 +11,15 @@ import {
   Text,
 } from 'react-native';
 import apiClient from '../api/apiClient';
-import DropDownPicker from 'react-native-dropdown-picker';
 import createStyles from '../styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
 
 export default function LeagueStandingsScreen({ navigation }) {
   // Load custom fonts
@@ -34,27 +37,19 @@ export default function LeagueStandingsScreen({ navigation }) {
   const [leagueId, setLeagueId] = useState(39);
   const [seasonYear, setSeasonYear] = useState(2024);
   const [leagues, setLeagues] = useState([]);
-  const [leagueOpen, setLeagueOpen] = useState(false);
-  const [leagueItems, setLeagueItems] = useState([]);
 
-  // Define fetchLeagues function before useEffect
+  // Fetch leagues and include country flags
   const fetchLeagues = async () => {
     try {
       const data = await apiClient.get('/leagues/');
       setLeagues(data);
-      setLeagueItems(
-        data.map((league) => ({
-          label: league.name,
-          value: league.league_id,
-        }))
-      );
     } catch (error) {
       console.error('Error fetching leagues:', error);
       Alert.alert('Error', 'Unable to fetch leagues.');
     }
   };
 
-  // Define fetchStandings function before useEffect
+  // Fetch standings for the selected league
   const fetchStandings = async () => {
     setLoading(true);
     try {
@@ -79,13 +74,21 @@ export default function LeagueStandingsScreen({ navigation }) {
     fetchStandings();
   }, [leagueId]);
 
-  // Ensure all hooks and functions are called before this conditional return
+  // Ensure all hooks and functions are called before any conditional return
   if (!fontsLoaded) {
     return null; // Optionally, display a loading indicator
   }
 
+  const handleLeagueSelect = (selectedLeagueId) => {
+    setLeagueId(selectedLeagueId);
+  };
+
   const renderItem = ({ item }) => (
-    <Animatable.View animation="fadeInUp" delay={200} style={styles.standingsItemWrapper}>
+    <Animatable.View
+      animation="fadeInUp"
+      delay={200}
+      style={styles.standingsItemWrapper}
+    >
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('TeamDetails', { teamId: item.team.team_id })
@@ -98,7 +101,9 @@ export default function LeagueStandingsScreen({ navigation }) {
             style={styles.standingsTeamLogo}
           />
           <Text style={styles.standingsTeamName}>{item.team.name}</Text>
-          <Text style={styles.standingsPlayed}>{item.matches_played ?? 0}</Text>
+          <Text style={styles.standingsPlayed}>
+            {item.matches_played ?? 0}
+          </Text>
           <Text style={styles.standingsWins}>{item.wins ?? 0}</Text>
           <Text style={styles.standingsDraws}>{item.draws ?? 0}</Text>
           <Text style={styles.standingsLosses}>{item.losses ?? 0}</Text>
@@ -122,33 +127,48 @@ export default function LeagueStandingsScreen({ navigation }) {
       style={styles.background}
     >
       <SafeAreaView style={styles.safeArea}>
-        <Animatable.View animation="fadeInDown" delay={200} style={styles.header}>
-          <Text style={styles.sectionTitle}>League Standings</Text>
-        </Animatable.View>
-        <View style={styles.standingsContainer}>
-          <DropDownPicker
-            open={leagueOpen}
-            value={leagueId}
-            items={leagueItems}
-            setOpen={setLeagueOpen}
-            setValue={setLeagueId}
-            setItems={setLeagueItems}
-            placeholder="Select a league"
-            onChangeValue={(value) => setLeagueId(value)}
-            searchable={true}
-            searchablePlaceholder="Search leagues..."
-            zIndex={1000}
-            zIndexInverse={3000}
-            style={styles.dropDownStyle}
-            dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.dropDownTextStyle}
-            labelStyle={styles.dropDownLabelStyle}
-            selectedItemLabelStyle={styles.dropDownSelectedLabelStyle}
-            arrowIconStyle={styles.dropDownArrowIconStyle}
-            tickIconStyle={styles.dropDownTickIconStyle}
-            listItemContainerStyle={styles.listItemContainerStyle}
-            listItemLabelStyle={styles.listItemLabelStyle}
-          />
+        <View style={styles.container}>
+          {/* Header Section */}
+          <Animatable.View
+            animation="fadeInDown"
+            delay={200}
+            style={styles.headerContainer}
+          >
+            <Text style={styles.sectionTitle}>League Standings</Text>
+          </Animatable.View>
+
+          {/* League Selector */}
+          <View style={styles.leagueSelectorContainer}>
+            {leagues.map((league) => (
+              <TouchableOpacity
+                key={league.league_id}
+                style={[
+                  styles.leagueButton,
+                  league.league_id === leagueId && styles.leagueButtonSelected,
+                ]}
+                onPress={() => handleLeagueSelect(league.league_id)}
+              >
+                <View style={styles.leagueButtonContent}>
+                  {league.country && league.country.flag ? (
+                    <Image
+                      source={{ uri: league.country.flag }}
+                      style={styles.leagueFlag}
+                    />
+                  ) : null}
+                  <Text
+                    style={[
+                      styles.leagueButtonText,
+                      league.league_id === leagueId && styles.leagueButtonTextSelected,
+                    ]}
+                  >
+                    {league.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Standings Header */}
           <View style={styles.standingsHeader}>
             <Text style={styles.headerRank}>#</Text>
             <Text style={styles.headerTeam}>Team</Text>
@@ -158,6 +178,8 @@ export default function LeagueStandingsScreen({ navigation }) {
             <Text style={styles.headerLosses}>L</Text>
             <Text style={styles.headerPoints}>Pts</Text>
           </View>
+
+          {/* Standings List */}
           <FlatList
             data={standings}
             keyExtractor={(item) => item.team.team_id.toString()}

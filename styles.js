@@ -21,6 +21,11 @@ const createStyles = (colors) =>
       backgroundColor: colors.background || '#0f0c29',
       paddingHorizontal: 16,
     },
+    headerContainer: {
+      paddingHorizontal: 16,
+      marginTop: 16,
+      marginBottom: 16,
+    },
     loaderContainer: {
       flex: 1,
       justifyContent: 'center',
@@ -360,8 +365,8 @@ const createStyles = (colors) =>
       alignItems: 'center',
     },
     playerAvatar: {
-      width: 40,
-      height: 40,
+      width: 90,
+      height: 90,
       borderRadius: 20,
     },
     playerIcon: {
@@ -487,11 +492,13 @@ const createStyles = (colors) =>
     dropDownTickIconStyle: {
       tintColor: colors.primary || '#ff416c',
     },
-        // DropDownPicker Styles
     dropDownWrapper: {
-      zIndex: 2000, // High zIndex to ensure it appears above other components
-      elevation: 2000, // For Android
+      zIndex: 1000, // High zIndex to ensure it appears above other components
+      elevation: 1000, // For Android
+      marginBottom: 16,
+      width: '100%',
     },
+    
     // If you have multiple DropDownPickers, adjust zIndex accordingly
     dropDownWrapperSecond: {
       zIndex: 1000,
@@ -514,6 +521,7 @@ const createStyles = (colors) =>
       borderBottomColor: colors.border || '#ccc',
       backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
       width: '100%',
+      paddingHorizontal: 16, // Added padding to prevent text from touching edges
     },
     headerRank: {
       fontSize: 14,
@@ -578,6 +586,7 @@ const createStyles = (colors) =>
       borderBottomWidth: 1,
       borderBottomColor: colors.border || '#ccc',
       width: '100%',
+      paddingHorizontal: 16, // Added padding to align items properly
     },
     standingsRank: {
       fontSize: 16,
@@ -633,6 +642,35 @@ const createStyles = (colors) =>
       textAlign: 'center',
       fontFamily: 'Montserrat_700Bold',
     },
+    leagueSelectorContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap', // Allow buttons to wrap to next line
+      marginBottom: 16,
+    },
+    leagueButton: {
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 20,
+      marginRight: 8,
+      marginBottom: 8, // Add margin bottom for spacing between rows
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    leagueButtonSelected: {
+      backgroundColor: colors.primary || '#ff416c',
+    },
+    leagueButtonText: {
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+      textAlign: 'center',
+    },
+    leagueButtonTextSelected: {
+      color: colors.onPrimary || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+      textAlign: 'center',
+    },
+
 
     // ----------------------------------------
     // PlayerProfileScreen Styles
@@ -923,6 +961,42 @@ const createStyles = (colors) =>
       textAlign: 'center',
       fontFamily: 'Montserrat_700Bold',
     },
+
+    // ----------------------------------------
+    // Stat Type Selector Styles
+    // ----------------------------------------
+    statTypeSelectorContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+    },
+    statButton: {
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 20,
+      marginBottom: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexGrow: 1,
+      marginHorizontal: 4,
+      minWidth: 80,
+    },
+    statButtonSelected: {
+      backgroundColor: colors.primary || '#ff416c',
+    },
+    statButtonText: {
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+      textAlign: 'center',
+      flexShrink: 1,
+    },
+    statButtonTextSelected: {
+      color: colors.onPrimary || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+    },
+
   });
 
 export default createStyles;
