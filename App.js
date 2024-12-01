@@ -45,6 +45,8 @@ function HomeStack() {
       <Stack.Screen name="MatchDetails" component={MatchDetailsScreen} options={{ title: 'Match Details' }} />
       <Stack.Screen name="TeamDetails" component={TeamDetailsScreen} options={{ title: 'Team Details' }} />
       <Stack.Screen name="PlayerProfile" component={PlayerProfileScreen} options={{ title: 'Player Profile' }} />
+      {/* Add navigation to PlayerRankingsScreen from HomeStack */}
+      <Stack.Screen name="PlayerRankings" component={PlayerRankingsScreen} options={{ title: 'Player Rankings' }} />
     </Stack.Navigator>
   );
 }

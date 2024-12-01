@@ -1,22 +1,32 @@
 // screens/TeamDetailsScreen.js
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ActivityIndicator,
   Alert,
   Image,
   ScrollView,
-} from "react-native";
-import { useTheme } from "react-native-paper"; // Ensure correct import
-import apiClient from "../api/apiClient";
-import createStyles from "../styles"; // Adjust the path as necessary
+} from 'react-native';
+import createStyles from '../styles';
+import apiClient from '../api/apiClient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Animatable from 'react-native-animatable';
+import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 
 export default function TeamDetailsScreen({ route }) {
-  const { colors, dark } = useTheme(); // Destructure 'dark' correctly
-  const styles = createStyles(colors); // Pass only 'colors' if 'dark' is not used in styles.js
+  // Load custom fonts
+  const [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+    Montserrat_700Bold,
+  });
+
+  // Import styles from updated styles.js
+  const styles = createStyles({});
+
+  // State variables
   const { teamId } = route.params;
   const [team, setTeam] = useState(null);
   const [stats, setStats] = useState(null);
@@ -24,10 +34,7 @@ export default function TeamDetailsScreen({ route }) {
 
   const seasonYear = 2024;
 
-  useEffect(() => {
-    fetchTeamDetails();
-  }, []);
-
+  // Fetch team details
   const fetchTeamDetails = async () => {
     try {
       const teamData = await apiClient.get(`/teams/${teamId}`);
@@ -37,76 +44,108 @@ export default function TeamDetailsScreen({ route }) {
       setTeam(teamData);
       setStats(statsData);
     } catch (error) {
-      console.error("Error fetching team details:", error);
-      Alert.alert("Error", "Unable to fetch team details.");
+      console.error('Error fetching team details:', error);
+      Alert.alert('Error', 'Unable to fetch team details.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return <ActivityIndicator size="large" style={styles.loader} color={colors.primary} />;
+  // useEffect hooks
+  useEffect(() => {
+    fetchTeamDetails();
+  }, []);
+
+  // Ensure all hooks and functions are called before this conditional return
+  if (!fontsLoaded) {
+    return null; // Optionally, display a loading indicator
   }
 
-  if (!team || !stats) {
+  if (loading) {
     return (
-      <View style={styles.container}>
-        <Text style={{ color: colors.text }}>Error loading team details.</Text>
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#ff416c" />
       </View>
     );
   }
 
+  if (!team || !stats) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error loading team details.</Text>
+      </View>
+    );
+  }
+
+  const renderTeamStatistics = (stats) => {
+    const statsData = [
+      { label: 'Matches Played', value: stats.matches_played },
+      { label: 'Wins', value: stats.wins },
+      { label: 'Draws', value: stats.draws },
+      { label: 'Losses', value: stats.losses },
+      { label: 'Goals For', value: stats.goals_for },
+      { label: 'Goals Against', value: stats.goals_against },
+      { label: 'Goal Difference', value: stats.goal_difference },
+      { label: 'Clean Sheets', value: stats.clean_sheets },
+      {
+        label: 'Avg Shots on Target',
+        value: stats.average_shots_on_target
+          ? stats.average_shots_on_target.toFixed(2)
+          : 'N/A',
+      },
+      {
+        label: 'Avg Tackles',
+        value: stats.average_tackles
+          ? stats.average_tackles.toFixed(2)
+          : 'N/A',
+      },
+      {
+        label: 'Avg Pass Accuracy',
+        value: stats.average_passes_accuracy
+          ? `${stats.average_passes_accuracy.toFixed(2)}%`
+          : 'N/A',
+      },
+    ];
+
+    return (
+      <View style={styles.statsGrid}>
+        {statsData.map((stat, index) => (
+          <View key={index} style={styles.statCard}>
+            <Text style={styles.statCardValue}>{stat.value}</Text>
+            <Text style={styles.statCardLabel}>{stat.label}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.teamContainer}>
-        <Image source={{ uri: team.logo }} style={styles.teamLogo} />
-        <Text style={styles.teamName}>{team.name}</Text>
-        <Text style={styles.teamInfo}>Founded: {team.founded || "N/A"}</Text>
-        <Text style={styles.teamInfo}>Country: {team.country}</Text>
-      </View>
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>Season Statistics</Text>
-        {renderTeamStatistics(stats, colors)}
-      </View>
-    </ScrollView>
+    <LinearGradient colors={['#0f0c29', '#302b63', '#24243e']} style={styles.background}>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* Team Header */}
+          <Animatable.View animation="fadeInDown" delay={200} style={styles.teamHeaderCard}>
+            <View style={styles.teamHeaderContainer}>
+              {team.logo ? (
+                <Image source={{ uri: team.logo }} style={styles.teamLogo} />
+              ) : (
+                <View style={styles.placeholderLogo} />
+              )}
+              <View style={styles.teamInfo}>
+                <Text style={styles.teamName}>{team.name}</Text>
+                <Text style={styles.teamDetail}>Founded: {team.founded || 'N/A'}</Text>
+                <Text style={styles.teamDetail}>Country: {team.country}</Text>
+              </View>
+            </View>
+          </Animatable.View>
+
+          {/* Season Statistics */}
+          <Animatable.View animation="fadeInUp" delay={300} style={styles.statisticsCard}>
+            <Text style={styles.sectionTitle}>Season Statistics ({seasonYear})</Text>
+            {renderTeamStatistics(stats)}
+          </Animatable.View>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
-
-// Helper function to render team statistics
-const renderTeamStatistics = (stats, colors) => {
-  const statsData = [
-    { label: "Matches Played", value: stats.matches_played },
-    { label: "Wins", value: stats.wins },
-    { label: "Draws", value: stats.draws },
-    { label: "Losses", value: stats.losses },
-    { label: "Goals For", value: stats.goals_for },
-    { label: "Goals Against", value: stats.goals_against },
-    { label: "Goal Difference", value: stats.goal_difference },
-    { label: "Clean Sheets", value: stats.clean_sheets },
-    {
-      label: "Avg Shots on Target",
-      value: stats.average_shots_on_target
-        ? stats.average_shots_on_target.toFixed(2)
-        : "N/A",
-    },
-    {
-      label: "Avg Tackles",
-      value: stats.average_tackles
-        ? stats.average_tackles.toFixed(2)
-        : "N/A",
-    },
-    {
-      label: "Avg Pass Accuracy",
-      value: stats.average_passes_accuracy
-        ? stats.average_passes_accuracy.toFixed(2) + "%"
-        : "N/A",
-    },
-  ];
-
-  return statsData.map((stat, index) => (
-    <View key={index} style={styles.statRow}>
-      <Text style={styles.statLabel}>{stat.label}</Text>
-      <Text style={styles.statValue}>{stat.value}</Text>
-    </View>
-  ));
-};

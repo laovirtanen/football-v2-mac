@@ -1,149 +1,182 @@
 // styles.js
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const createStyles = (colors) =>
   StyleSheet.create({
-    // Container Styles
+    // ----------------------------------------
+    // General Styles
+    // ----------------------------------------
     container: {
       flex: 1,
-      padding: 16,
-      backgroundColor: colors.background,
+      paddingHorizontal: 16, // Add horizontal padding
+      paddingVertical: 8, // Optional vertical padding
+      backgroundColor: colors.background || '#0f0c29',
     },
     scrollContainer: {
-      alignItems: "center",
       paddingBottom: 20,
-      backgroundColor: colors.background,
+      backgroundColor: colors.background || '#0f0c29',
+      paddingHorizontal: 16,
     },
-    loader: {
-      marginTop: 20,
+    loaderContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background || '#0f0c29',
     },
 
-    // Background Style (for LinearGradient)
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background || '#0f0c29',
+      padding: 16,
+    },
+    errorText: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background || '#0f0c29',
+    },
     background: {
       flex: 1,
+      width: width,
+      height: height,
     },
-
-    // Card Styles
     card: {
       marginBottom: 16,
-      elevation: 2,
-      borderRadius: 12,
+      elevation: 4,
+      borderRadius: 16,
       padding: 16,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
       width: '100%',
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 6,
     },
     cardContent: {
-      alignItems: "center",
+      alignItems: 'center',
     },
-
-    // Text Styles
     sectionTitle: {
-      fontSize: 22,
-      fontWeight: "bold",
+      fontSize: 24,
+      fontWeight: 'bold',
       marginBottom: 16,
-      textAlign: "center",
-      color: colors.text,
+      textAlign: 'center',
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
     },
     subSectionTitle: {
       fontSize: 20,
-      fontWeight: "bold",
-      marginVertical: 8,
-      textAlign: "center",
-      color: colors.text,
+      fontWeight: 'bold',
+      marginVertical: 12,
+      textAlign: 'center',
+      color: colors.primary || '#ff416c',
+      fontFamily: 'Montserrat_700Bold',
     },
     infoText: {
       fontSize: 16,
       marginVertical: 4,
-      color: colors.text,
+      color: colors.text || '#fff',
       textAlign: 'center',
-    },
-    statLabel: {
-      fontSize: 16,
-      color: colors.text,
-      flex: 2,
-      textAlign: "center",
-    },
-    statValue: {
-      fontSize: 16,
-      fontWeight: "bold",
-      color: colors.text,
-      flex: 1,
-      textAlign: "center",
-    },
-    teamName: {
-      fontSize: 18,
-      fontWeight: "bold",
-      textAlign: "center",
-      maxWidth: 120,
-      color: colors.text,
-    },
-    teamInfo: {
-      fontSize: 16,
-      textAlign: "center",
-      color: colors.text,
+      fontFamily: 'Montserrat_400Regular',
     },
     adviceText: {
       fontSize: 16,
       marginBottom: 16,
-      textAlign: "center",
-      fontStyle: "italic",
-      color: colors.text,
+      textAlign: 'center',
+      fontStyle: 'italic',
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
     },
     oddsText: {
       fontSize: 16,
       marginBottom: 4,
-      color: colors.text,
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
     },
     noFixturesText: {
       marginTop: 16,
-      textAlign: "center",
+      textAlign: 'center',
       fontSize: 16,
-      color: colors.text,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    noPlayersText: {
+      textAlign: 'center',
+      fontSize: 16,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    datePickerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+      width: '100%',
+    },
+    dateText: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
     },
 
-    // Teams Container Styles
+    // ----------------------------------------
+    // MatchDetailsScreen Styles
+    // ----------------------------------------
     teamsContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-around",
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       marginBottom: 24,
       width: '100%',
       marginTop: 16,
     },
     team: {
-      alignItems: "center",
+      alignItems: 'center',
       flex: 1,
     },
     vsContainer: {
-      flex: 0.5,
-      alignItems: "center",
-      justifyContent: "center",
+      flex: 0.2,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     teamLogoLarge: {
-      width: 100,
-      height: 100,
-      resizeMode: "contain",
+      width: 80,
+      height: 80,
+      resizeMode: 'contain',
       marginBottom: 8,
     },
     placeholderLogo: {
       width: 80,
       height: 80,
-      backgroundColor: colors.border,
+      backgroundColor: colors.border || '#ccc',
       marginBottom: 8,
       borderRadius: 40,
     },
+    teamName: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      maxWidth: 120,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+    },
     vsText: {
       fontSize: 24,
-      fontWeight: "bold",
-      marginHorizontal: 8,
-      color: colors.primary,
+      fontWeight: 'bold',
+      color: colors.primary || '#ff416c',
     },
-
-    // Filter Styles
     filterContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
+      flexDirection: 'row',
+      justifyContent: 'center',
       marginVertical: 8,
     },
     filterButton: {
@@ -152,135 +185,528 @@ const createStyles = (colors) =>
       marginHorizontal: 4,
       borderRadius: 20,
       borderWidth: 1,
-      borderColor: colors.primary,
-      backgroundColor: colors.surface,
+      borderColor: colors.primary || '#ff416c',
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
     },
     filterButtonActive: {
-      backgroundColor: colors.primary,
+      backgroundColor: colors.primary || '#ff416c',
     },
     filterButtonText: {
-      color: colors.text,
+      color: colors.text || '#fff',
       fontSize: 14,
+      fontFamily: 'Montserrat_400Regular',
     },
     filterButtonTextActive: {
-      color: colors.onPrimary,
-      fontWeight: "bold",
+      color: colors.onPrimary || '#fff',
+      fontWeight: 'bold',
     },
-
-    // Form Styles
     formContainer: {
       marginTop: 8,
-      width: "100%",
+      width: '100%',
     },
     formItem: {
-      flexDirection: "row",
-      alignItems: "center",
+      flexDirection: 'row',
+      alignItems: 'center',
       paddingVertical: 8,
       borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      borderBottomColor: colors.border || '#ccc',
+      justifyContent: 'space-between',
+      width: '100%',
     },
     outcomeBadge: {
       width: 30,
       height: 30,
       borderRadius: 15,
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: 'center',
+      justifyContent: 'center',
       marginRight: 8,
     },
     winBadge: {
-      backgroundColor: "#32CD32",
+      backgroundColor: '#32CD32',
     },
     drawBadge: {
-      backgroundColor: "#FFD700",
+      backgroundColor: '#FFD700',
     },
     lossBadge: {
-      backgroundColor: "#FF4500",
+      backgroundColor: '#FF4500',
     },
     outcomeText: {
-      color: "#fff",
-      fontWeight: "bold",
+      color: '#fff',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
     },
     formText: {
-      fontSize: 16,
-      color: colors.text,
+      fontSize: 14,
+      color: colors.text || '#fff',
       flexShrink: 1,
+      flex: 3,
+      fontFamily: 'Montserrat_400Regular',
     },
     opponentLogo: {
       width: 24,
       height: 24,
-      resizeMode: "contain",
+      resizeMode: 'contain',
       marginRight: 8,
     },
-
-    // Statistics Styles
-    statsTable: {
-      marginTop: 16,
+    resultText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      marginLeft: 8,
+      width: 60,
+      textAlign: 'right',
     },
+    winText: {
+      color: '#32CD32',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    drawText: {
+      color: '#FFD700',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    lossText: {
+      color: '#FF4500',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    showMoreButton: {
+      marginVertical: 8,
+      alignItems: 'center',
+    },
+    showMoreText: {
+      color: colors.primary || '#ff416c',
+      fontSize: 16,
+      fontFamily: 'Montserrat_700Bold',
+    },
+    // Team Statistics Styles
     statsHeader: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    statsTeam: {
+      alignItems: 'center',
+      width: '45%',
+    },
+    statsTeamLogo: {
+      width: 50,
+      height: 50,
+      resizeMode: 'contain',
       marginBottom: 8,
-      paddingHorizontal: 16,
+    },
+    placeholderLogoSmall: {
+      width: 50,
+      height: 50,
+      backgroundColor: colors.border || '#ccc',
+      marginBottom: 8,
+      borderRadius: 25,
     },
     statsTeamName: {
-      fontSize: 18,
-      fontWeight: "bold",
-      flex: 1,
-      textAlign: "center",
-      color: colors.text,
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    statsTable: {
+      width: '100%',
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 12,
+      overflow: 'hidden',
     },
     statRow: {
-      flexDirection: "row",
-      alignItems: "center",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       paddingVertical: 8,
-      justifyContent: "space-between",
       paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border || '#ccc',
+    },
+    statLabel: {
+      fontSize: 14,
+      color: colors.textSecondary || '#ccc',
+      flex: 2,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    statValue: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      flex: 1,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    topPlayersContainer: {
+      marginBottom: 16,
+      width: '100%',
+    },
+    playerCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 8,
+      borderRadius: 8,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 2,
+      marginBottom: 12,
+      width: '100%',
+    },
+    playerAvatarContainer: {
+      marginRight: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    playerAvatar: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+    },
+    playerIcon: {
+      width: 40,
+      height: 40,
+    },
+    playerInfo: {
+      flex: 2,
+    },
+    playerName: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    playerPosition: {
+      fontSize: 12,
+      color: colors.textSecondary || '#ccc',
+      marginTop: 2,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    playerStats: {
+      flex: 1,
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+    },
+    playerStat: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    statText: {
+      fontSize: 12,
+      color: colors.text || '#fff',
+      marginLeft: 4,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    pieChart: {
+      marginVertical: 8,
+    },
+    // ----------------------------------------
+    // FixturesScreen Styles
+    // ----------------------------------------
+    fixtureCard: {
+      marginVertical: 8,
+      borderRadius: 12,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      elevation: 3,
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
+    },
+    fixturesItemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      paddingVertical: 8,
+      width: '100%',
+    },
+    time: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      minWidth: 70,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    teamContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexShrink: 1,
+      maxWidth: 100,
+    },
+    teamLogoSmall: {
+      width: 32,
+      height: 32,
+      resizeMode: 'contain',
+      marginRight: 8,
+    },
+    vsTextSmall: {
+      fontSize: 18,
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    teamNameSmall: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      flexShrink: 1,
+      fontFamily: 'Montserrat_700Bold',
+    },
+    dropDownPicker: {
+      marginVertical: 8,
+      zIndex: 10,
+      width: '100%',
+    },
+    dropDownStyle: {
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderColor: colors.border || '#ccc',
+    },
+    dropDownContainerStyle: {
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderColor: colors.border || '#ccc',
+    },
+    dropDownTextStyle: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    dropDownLabelStyle: {
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    dropDownSelectedLabelStyle: {
+      fontWeight: 'bold',
+      color: colors.primary || '#ff416c',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    dropDownArrowIconStyle: {
+      tintColor: colors.text || '#fff',
+    },
+    dropDownTickIconStyle: {
+      tintColor: colors.primary || '#ff416c',
+    },
+        // DropDownPicker Styles
+    dropDownWrapper: {
+      zIndex: 2000, // High zIndex to ensure it appears above other components
+      elevation: 2000, // For Android
+    },
+    // If you have multiple DropDownPickers, adjust zIndex accordingly
+    dropDownWrapperSecond: {
+      zIndex: 1000,
+      elevation: 1000,
     },
 
-    // Player Profile Styles
+    // ----------------------------------------
+    // StandingsScreen Styles
+    // ----------------------------------------
+    standingsContainer: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: colors.background || '#0f0c29',
+    },
+    standingsHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border || '#ccc',
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      width: '100%',
+    },
+    headerRank: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerTeam: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      flex: 1,
+      marginLeft: 8,
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerPlayed: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerWins: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerDraws: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerLosses: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    headerPoints: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      width: 40,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    standingsItemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border || '#ccc',
+      width: '100%',
+    },
+    standingsRank: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsTeamLogo: {
+      width: 30,
+      height: 30,
+      resizeMode: 'contain',
+      marginRight: 8,
+    },
+    standingsTeamName: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      flex: 1,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsPlayed: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsWins: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsDraws: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsLosses: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 30,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    standingsPoints: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 40,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+
+    // ----------------------------------------
+    // PlayerProfileScreen Styles
+    // ----------------------------------------
     statsContainer: {
       width: '100%',
       padding: 16,
-      backgroundColor: colors.surface,
-      borderRadius: 12,
-      marginBottom: 16,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 16,
+      marginBottom: 24,
+      elevation: 4,
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
     },
     statsTitle: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 12,
+      color: colors.text || '#fff',
+      marginBottom: 16,
       textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    playerName: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: colors.primary || '#ff416c',
+      marginTop: 16,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    avatar: {
+      marginBottom: 16,
+      alignSelf: 'center',
+    },
+    infoText: {
+      fontSize: 16,
+      color: colors.textSecondary || '#ccc',
+      marginBottom: 8,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
     },
     sectionTitle: {
       fontSize: 20,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginTop: 16,
+      fontWeight: '600',
+      color: colors.text || '#fff',
+      marginVertical: 12,
+      fontFamily: 'Montserrat_700Bold',
+    },
+    statRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       marginBottom: 8,
+      paddingHorizontal: 16,
     },
-    playerName: {
-      fontSize: 24,
+    statLabel: {
+      fontSize: 16,
+      color: colors.textSecondary || '#ccc',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    statValue: {
+      fontSize: 16,
       fontWeight: 'bold',
-      color: colors.text,
-      marginTop: 12,
-      textAlign: 'center',
-    },
-    infoText: {
-      fontSize: 18,
-      color: colors.text,
-      marginVertical: 2,
-      textAlign: 'center',
-    },
-    avatar: {
-      marginBottom: 8,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
     },
 
-    // Player Styles
+    // ----------------------------------------
+    // Player Styles (used in various screens)
+    // ----------------------------------------
     playerItem: {
-      flexDirection: "row",
-      alignItems: "center",
+      flexDirection: 'row',
+      alignItems: 'center',
       paddingVertical: 8,
     },
     playerIcon: {
@@ -288,340 +714,215 @@ const createStyles = (colors) =>
     },
     playerText: {
       fontSize: 16,
-      color: colors.text,
+      color: colors.text || '#fff',
       flexShrink: 1,
+      fontFamily: 'Montserrat_400Regular',
     },
 
-    // League Standings Styles
-    standingsContainer: {
-      flex: 1,
-      padding: 16,
-      backgroundColor: colors.background,
-    },
-    standingsItemContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 8,
+    // ----------------------------------------
+    // LeagueRankingsScreen Styles
+    // ----------------------------------------
+    rankingsItemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 16,
       borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      borderBottomColor: colors.border || '#ccc',
+      width: '100%',
     },
-    standingsHeader: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 8,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-      backgroundColor: colors.surface,
-    },
-    headerRank: {
-      fontSize: 14,
-      color: colors.text,
+    rankingsRank: {
+      fontSize: 16,
+      color: colors.text || '#fff',
       width: 30,
-      textAlign: "center",
-      fontWeight: "bold",
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
     },
-    headerTeam: {
-      fontSize: 14,
-      color: colors.text,
-      flex: 1,
-      marginLeft: 8,
-      fontWeight: "bold",
-    },
-    headerPlayed: {
-      fontSize: 14,
-      color: colors.text,
-      width: 40,
-      textAlign: "center",
-      fontWeight: "bold",
-    },
-    headerPoints: {
-      fontSize: 14,
-      color: colors.text,
-      width: 40,
-      textAlign: "center",
-      fontWeight: "bold",
-    },
-    standingsRank: {
-      fontSize: 16,
-      color: colors.text,
-      width: 30,
-      textAlign: "center",
-    },
-    standingsTeamLogo: {
-      width: 30,
-      height: 30,
-      resizeMode: "contain",
-      marginRight: 8,
-    },
-    standingsTeamName: {
-      fontSize: 16,
-      color: colors.text,
-      flex: 1,
-    },
-    standingsPlayed: {
-      fontSize: 16,
-      color: colors.text,
-      width: 40,
-      textAlign: "center",
-    },
-    standingsPoints: {
-      fontSize: 16,
-      color: colors.text,
-      width: 40,
-      textAlign: "center",
-    },
-
-    // Pie Chart Styles
-    pieChart: {
-      marginVertical: 8,
-    },
-
-    // Picker Styles
-    picker: {
-      marginBottom: 16,
+    rankingsAvatar: {
+      width: 50,
       height: 50,
-      width: "100%",
-      color: colors.text,
-      backgroundColor: colors.surface,
+      borderRadius: 25,
+      marginRight: 12,
+    },
+    rankingsPlayerInfo: {
+      flex: 1,
+    },
+    rankingsPlayerName: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    rankingsTeamName: {
+      fontSize: 14,
+      color: colors.textSecondary || '#ccc',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    rankingsStatValue: {
+      fontSize: 16,
+      color: colors.text || '#fff',
+      width: 40,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
     },
 
-    // DropDownPicker Styles (For FixturesScreen)
+    // ----------------------------------------
+    // DropDownPicker Styles
+    // ----------------------------------------
     dropDownPicker: {
       zIndex: 1000,
       marginBottom: 16,
+      width: '100%',
     },
     dropDownStyle: {
-      backgroundColor: colors.surface,
-      borderColor: colors.border,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderColor: colors.border || '#ccc',
     },
     dropDownContainerStyle: {
-      backgroundColor: colors.surface,
-      borderColor: colors.border,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      borderColor: colors.border || '#ccc',
     },
     dropDownTextStyle: {
-      color: colors.text,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
     },
     dropDownLabelStyle: {
-      color: colors.text,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
     },
     dropDownSelectedLabelStyle: {
-      fontWeight: "bold",
-      color: colors.primary,
+      fontWeight: 'bold',
+      color: colors.primary || '#ff416c',
+      fontFamily: 'Montserrat_700Bold',
     },
     dropDownArrowIconStyle: {
-      tintColor: colors.text,
+      tintColor: colors.text || '#fff',
     },
     dropDownTickIconStyle: {
-      tintColor: colors.primary,
+      tintColor: colors.primary || '#ff416c',
     },
 
-    // Additional Styles
-    datePickerContainer: {
-      flexDirection: "row",
-      alignItems: "center",
+    // ----------------------------------------
+    // Picker Styles
+    // ----------------------------------------
+    picker: {
       marginBottom: 16,
+      height: 50,
+      width: '100%',
+      color: colors.text || '#fff',
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
     },
-    dateText: {
+
+    // ----------------------------------------
+    // Button Styles
+    // ----------------------------------------
+    button: {
+      backgroundColor: colors.primary || '#ff416c',
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 8,
+      width: '80%',
+      alignSelf: 'center',
+    },
+    buttonText: {
+      color: colors.onPrimary || '#fff',
       fontSize: 16,
-      color: colors.text,
+      fontWeight: 'bold',
+      fontFamily: 'Montserrat_700Bold',
     },
 
-    // Item Container for FlatList Items (FixturesScreen)
-    fixturesItemContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around", // Adjusted from 'space-between' to 'space-around'
-        paddingVertical: 8,
-        flexWrap: 'nowrap',
-      },
-      time: {
-        fontSize: 16,
-        color: colors.text,
-        textAlign: "center",
-        minWidth: 70,  // Ensure enough space for the time
-        flexShrink: 0, // Prevent the time from shrinking
-      },
-      teamContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        flexShrink: 1,
-        maxWidth: 100,  // Adjust as needed to prevent names from pushing other elements
-      },
-      
-    teamLogoSmall: {
-      width: 24,
-      height: 24,
-      resizeMode: "contain",
-      marginRight: 8,
+    // ----------------------------------------
+    // TeamDetailsScreen Styles
+    // ----------------------------------------
+    teamHeaderCard: {
+      marginBottom: 24,
+      borderRadius: 16,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      elevation: 6,
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
     },
-    vsTextSmall: {
-        fontSize: 16,
-        color: colors.text,
-        textAlign: "center",
-        width: 30,      // Fixed width to center the "vs" text
-        flexShrink: 0,  // Prevent the "vs" text from shrinking
-      },
-    teamNameSmall: {
-        fontSize: 16,
-        color: colors.text,
-        flexShrink: 1,
-      },
-
-     // Standings Header Styles
-     standingsHeader: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingVertical: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.border,
-        backgroundColor: colors.surface,
-      },
-      headerRank: {
-        fontSize: 14,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      headerTeam: {
-        fontSize: 14,
-        color: colors.text,
-        flex: 1,
-        marginLeft: 8,
-        fontWeight: "bold",
-      },
-      headerPlayed: {
-        fontSize: 14,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      headerWins: {
-        fontSize: 14,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      headerDraws: {
-        fontSize: 14,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      headerLosses: {
-        fontSize: 14,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-      headerPoints: {
-        fontSize: 14,
-        color: colors.text,
-        width: 40,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
-  
-      // Standings Item Styles
-      standingsItemContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingVertical: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.border,
-      },
-      standingsRank: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      standingsTeamLogo: {
-        width: 30,
-        height: 30,
-        resizeMode: "contain",
-        marginRight: 8,
-      },
-      standingsTeamName: {
-        fontSize: 16,
-        color: colors.text,
-        flex: 1,
-      },
-      standingsPlayed: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      standingsWins: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      standingsDraws: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      standingsLosses: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      standingsPoints: {
-        fontSize: 16,
-        color: colors.text,
-        width: 40,
-        textAlign: "center",
-      },
-  
-      // Rankings Item Styles
-      rankingsItemContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.border,
-      },
-      rankingsRank: {
-        fontSize: 16,
-        color: colors.text,
-        width: 30,
-        textAlign: "center",
-      },
-      rankingsAvatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 12,
-      },
-      rankingsPlayerInfo: {
-        flex: 1,
-      },
-      rankingsPlayerName: {
-        fontSize: 16,
-        color: colors.text,
-        fontWeight: "bold",
-      },
-      rankingsTeamName: {
-        fontSize: 14,
-        color: colors.text,
-      },
-      rankingsStatValue: {
-        fontSize: 16,
-        color: colors.text,
-        width: 40,
-        textAlign: "center",
-        fontWeight: "bold",
-      },
+    teamHeaderContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 20,
+    },
+    teamLogo: {
+      width: 120,
+      height: 120,
+      resizeMode: 'contain',
+      borderRadius: 60,
+      borderWidth: 2,
+      borderColor: colors.primary || '#ff416c',
+    },
+    teamInfo: {
+      marginLeft: 20,
+      flex: 1,
+      justifyContent: 'center',
+    },
+    teamName: {
+      fontSize: 26,
+      fontWeight: 'bold',
+      color: colors.primary || '#ff416c',
+      marginBottom: 10,
+      fontFamily: 'Montserrat_700Bold',
+    },
+    teamDetail: {
+      fontSize: 16,
+      color: colors.textSecondary || '#ccc',
+      marginBottom: 6,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    statisticsCard: {
+      borderRadius: 16,
+      backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
+      elevation: 6,
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      padding: 20,
+      marginBottom: 24,
+    },
+    statsGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
+    statCard: {
+      width: '47%',
+      backgroundColor: colors.background || '#302b63',
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 3,
+      shadowColor: colors.shadow || '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.15,
+      shadowRadius: 3,
+    },
+    statCardLabel: {
+      fontSize: 14,
+      color: colors.textSecondary || '#ccc',
+      textAlign: 'center',
+      marginTop: 6,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    statCardValue: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: colors.text || '#fff',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
   });
 
 export default createStyles;
