@@ -317,6 +317,7 @@ const createStyles = (colors) =>
       backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
       borderRadius: 12,
       overflow: 'hidden',
+      padding: 8,
     },
     statRow: {
       flexDirection: 'row',
@@ -996,6 +997,64 @@ const createStyles = (colors) =>
       color: colors.onPrimary || '#fff',
       fontFamily: 'Montserrat_700Bold',
     },
+
+    // ----------------------------------------
+  // Match Events Styles
+    // ----------------------------------------
+    eventsContainer: {
+      marginTop: 8,
+      width: '100%',
+    },
+    eventRow: {
+      flexDirection: 'row',
+      marginVertical: 8,
+    },
+    eventRowHome: {
+      justifyContent: 'flex-start',
+    },
+    eventRowAway: {
+      justifyContent: 'flex-end',
+    },
+    eventBubble: {
+      maxWidth: '75%',
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: 12,
+      padding: 10,
+    },
+    eventHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    eventMinute: {
+      fontSize: 12,
+      color: colors.textSecondary || '#ccc',
+      marginRight: 8,
+      fontFamily: 'Montserrat_400Regular',
+    },
+    eventPlayer: {
+      fontSize: 14,
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+    },
+    eventAssist: {
+      fontSize: 12,
+      color: colors.textSecondary || '#ccc',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    eventDetail: {
+      fontSize: 12,
+      color: colors.textSecondary || '#ccc',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    noEventsText: {
+      fontSize: 16,
+      color: colors.textSecondary || '#ccc',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+
+    
 
   });
 
