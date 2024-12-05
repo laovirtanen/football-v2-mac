@@ -166,6 +166,13 @@ const createStyles = (colors) =>
       marginBottom: 8,
       borderRadius: 40,
     },
+    scoreText: {
+      color: colors.accent,
+      fontFamily: 'Montserrat_700Bold',
+      fontSize: 28, // Increased font size for better visibility
+      textAlign: 'center',
+    },
+
     teamName: {
       fontSize: 16,
       fontWeight: 'bold',
@@ -999,7 +1006,7 @@ const createStyles = (colors) =>
     },
 
     // ----------------------------------------
-  // Match Events Styles
+    // Match Events Styles
     // ----------------------------------------
     eventsContainer: {
       marginTop: 8,
@@ -1054,8 +1061,108 @@ const createStyles = (colors) =>
       fontFamily: 'Montserrat_400Regular',
     },
 
-    
 
-  });
+    // ----------------------------------------
+    // Prediction Comparison Styles
+    // ----------------------------------------
 
-export default createStyles;
+
+    predictionContainer: {
+      marginTop: 16,
+    },
+    radarChartContainer: {
+      alignItems: 'center',
+      marginBottom: 24,
+    },
+    radarChart: {
+      marginVertical: 8,
+    },
+    legendContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: 8,
+    },
+    legendItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: 8,
+    },
+    legendColorBox: {
+      width: 16,
+      height: 16,
+      marginRight: 4,
+    },
+    legendLabel: {
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_400Regular',
+      fontSize: 12,
+      fontWeight: 'bold',
+    },
+    barChartsContainer: {
+      marginTop: 16,
+    },
+    barChartItem: {
+      marginBottom: 16,
+    },
+    barChartLabel: {
+      color: colors.text || '#fff',
+      fontFamily: 'Montserrat_700Bold',
+      fontSize: 14,
+      marginBottom: 4,
+    },
+    barChart: {
+      flexDirection: 'column',
+      marginBottom: 4,
+    },
+    barChartTeamLabels: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 4,
+    },
+    barChartTeamLabel: {
+      color: colors.textSecondary || '#ccc',
+      fontFamily: 'Montserrat_400Regular',
+      fontSize: 12,
+    },
+    bar: {
+      flexDirection: 'row',
+      height: 20,
+      marginVertical: 2,
+      backgroundColor: colors.border,
+      overflow: 'hidden',
+    },
+    barSegment: {
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    barText: {
+      fontSize: 10,
+      color: '#fff',
+      textAlign: 'center',
+    },
+    noPredictionText: {
+      fontSize: 16,
+      color: colors.textSecondary || '#ccc',
+      textAlign: 'center',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    predictionAdviceContainer: {
+      backgroundColor: colors.accent,
+      padding: 8,
+      borderRadius: 8,
+      marginVertical: 8,
+    },
+    adviceText: {
+      fontSize: 16,
+      color: colors.text,
+      textAlign: 'center',
+      fontFamily: 'Montserrat_700Bold',
+    },
+
+
+        
+
+      });
+
+    export default createStyles;

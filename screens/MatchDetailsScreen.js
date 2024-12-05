@@ -10,12 +10,19 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 import createStyles from '../styles';
 import apiClient from '../api/apiClient';
-import { PieChart } from 'react-native-chart-kit';
-import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'; // Added FontAwesome5 for additional icons
+import {
+  VictoryChart,
+  VictoryPolarAxis,
+  VictoryArea,
+  VictoryBar,
+  VictoryGroup,
+  VictoryLabel,
+  VictoryAxis,
+} from 'victory-native';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -96,6 +103,10 @@ export default function MatchDetailsScreen({ route, navigation }) {
       // Set match statistics and events if available
       setMatchStatistics(data.match_statistics || null);
       setMatchEvents(data.match_events || []);
+
+      // Log the prediction and comparison data
+      console.log('Prediction Data:', data.prediction);
+      console.log('Comparison Data:', data.prediction?.comparison);
     } catch (error) {
       console.error(`Error fetching /fixtures/${fixtureId}/detailed:`, error);
       Alert.alert('Error', 'Unable to fetch match details.');
@@ -397,6 +408,151 @@ export default function MatchDetailsScreen({ route, navigation }) {
     );
   };
 
+  // Function to render the radar chart and bar charts for prediction comparison
+  const renderPredictionComparison = (comparison) => {
+    if (!comparison) {
+      return (
+        <Text style={styles.noPredictionText}>No comparison data available.</Text>
+      );
+    }
+
+    console.log('Comparison Data:', comparison);
+
+    // Define metrics with labels
+    const metrics = [
+      { key: 'strength', label: 'Strength' },
+      { key: 'att', label: 'Attacking Potential' },
+      { key: 'def', label: 'Defensive Potential' },
+      { key: 'form', label: 'Form' },
+      { key: 'h2h', label: 'H2H' },
+      { key: 'goals', label: 'Goals' },
+      { key: 'poisson_distribution', label: 'Poisson Distribution' },
+      { key: 'total', label: 'Total' },
+    ];
+
+    // Prepare data for radar chart
+    const radarData = [];
+
+    metrics.forEach((metric) => {
+      if (comparison[metric.key]) {
+        const homeValue = parseFloat(comparison[metric.key].home.replace('%', '')) || 0;
+        const awayValue = parseFloat(comparison[metric.key].away.replace('%', '')) || 0;
+
+        radarData.push({
+          x: metric.label,
+          home: homeValue,
+          away: awayValue,
+        });
+      }
+    });
+
+    // Prepare data for bar charts
+    const barData = radarData;
+
+    const screenWidth = Dimensions.get('window').width - 64; // Adjust for padding
+
+    return (
+      <View style={styles.predictionContainer}>
+        {/* Radar Chart */}
+        {radarData.length > 0 && (
+          <View style={styles.radarChartContainer}>
+            <Text style={styles.subSectionTitle}>Team Comparison</Text>
+            <VictoryChart
+              polar
+              width={screenWidth}
+              height={400}
+              domain={{ y: [0, 100] }}
+            >
+              <VictoryPolarAxis
+                dependentAxis
+                style={{
+                  axisLabel: { padding: 30, fill: colors.text },
+                  tickLabels: { fill: colors.text, fontSize: 12 },
+                  grid: { stroke: colors.border },
+                }}
+              />
+              <VictoryPolarAxis
+                style={{
+                  axisLabel: { fill: colors.text },
+                  tickLabels: { fill: colors.text, fontSize: 12 },
+                  grid: { stroke: colors.border },
+                }}
+                labelPlacement="vertical"
+                tickValues={radarData.map((d) => d.x)}
+                tickFormat={radarData.map((d) => d.x)}
+              />
+              <VictoryGroup
+                colorScale={[colors.primary, colors.secondary]}
+                style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+              >
+                <VictoryArea
+                  data={radarData.map((d) => ({ x: d.x, y: d.home }))}
+                />
+                <VictoryArea
+                  data={radarData.map((d) => ({ x: d.x, y: d.away }))}
+                />
+              </VictoryGroup>
+            </VictoryChart>
+            <View style={styles.legendContainer}>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendColorBox, { backgroundColor: colors.primary }]} />
+                <Text style={styles.legendLabel}>{fixture.home_team?.name || 'Home Team'}</Text>
+              </View>
+              <View style={styles.legendItem}>
+                <View style={[styles.legendColorBox, { backgroundColor: colors.secondary }]} />
+                <Text style={styles.legendLabel}>{fixture.away_team?.name || 'Away Team'}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Bar Charts */}
+        {barData.length > 0 && (
+          <View style={styles.barChartsContainer}>
+            <Text style={styles.subSectionTitle}>Performance Metrics</Text>
+            {barData.map((item, index) => (
+              <View key={index} style={styles.barChartItem}>
+                <Text style={styles.barChartLabel}>{item.x}</Text>
+                <View style={styles.barChartTeamLabels}>
+                  <Text style={styles.barChartTeamLabel}>
+                    {fixture.home_team?.name || 'Home'}: {item.home}%
+                  </Text>
+                  <Text style={styles.barChartTeamLabel}>
+                    {fixture.away_team?.name || 'Away'}: {item.away}%
+                  </Text>
+                </View>
+                <View style={styles.bar}>
+                  <View
+                    style={[
+                      styles.barSegment,
+                      {
+                        width: `${item.home}%`,
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.barText}>{item.home}%</Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.barSegment,
+                      {
+                        width: `${item.away}%`,
+                        backgroundColor: colors.secondary,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.barText}>{item.away}%</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+    );
+  };
+
   // Ensure that the conditional return comes after all hooks and functions
   if (!fontsLoaded) {
     return null; // Optionally, display a loading indicator
@@ -421,34 +577,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
   const { prediction } = fixture;
 
   const { bestOdd, bestBookmaker } = getBestOdds();
-
-  // Prepare data for the pie chart if prediction is available
-  let pieChartData = [];
-  if (prediction) {
-    pieChartData = [
-      {
-        name: fixture.home_team?.name || 'Home Team',
-        percentage: parseFloat(prediction.percent_home) || 0,
-        color: colors.primary,
-        legendFontColor: '#fff',
-        legendFontSize: 12,
-      },
-      {
-        name: 'Draw',
-        percentage: parseFloat(prediction.percent_draw) || 0,
-        color: colors.accent,
-        legendFontColor: '#fff',
-        legendFontSize: 12,
-      },
-      {
-        name: fixture.away_team?.name || 'Away Team',
-        percentage: parseFloat(prediction.percent_away) || 0,
-        color: colors.secondary,
-        legendFontColor: '#fff',
-        legendFontSize: 12,
-      },
-    ];
-  }
 
   // Screen width for charts
   const screenWidth = Dimensions.get('window').width - 32; // Adjust for padding
@@ -580,53 +708,36 @@ export default function MatchDetailsScreen({ route, navigation }) {
           ) : (
             // Match is upcoming, display predictions and odds
             <>
-              {/* Prediction Section */}
-              {prediction ? (
-                <Animatable.View
-                  animation="fadeInUp"
-                  delay={400}
-                  style={styles.card}
-                >
-                  <Text style={styles.sectionTitle}>Prediction</Text>
-                  <Text style={styles.adviceText}>
-                    {prediction.advice || 'No advice available'}
-                  </Text>
+                        {/* Prediction Section */}
+          {prediction ? (
+            <Animatable.View
+              animation="fadeInUp"
+              delay={400}
+              style={styles.card}
+            >
+              <Text style={styles.sectionTitle}>Prediction</Text>
+              <View style={styles.predictionAdviceContainer}>
+                <Text style={styles.adviceText}>
+                  {prediction.advice || 'No advice available'}
+                </Text>
+              </View>
 
-                  {/* Pie Chart for Prediction Percentages */}
-                  <PieChart
-                    data={pieChartData}
-                    width={screenWidth}
-                    height={220}
-                    chartConfig={{
-                      backgroundGradientFrom: 'transparent',
-                      backgroundGradientTo: 'transparent',
-                      color: (opacity = 1) =>
-                        `rgba(255, 255, 255, ${opacity})`,
-                      labelColor: (opacity = 1) =>
-                        `rgba(255, 255, 255, ${opacity})`,
-                      strokeWidth: 2,
-                      barPercentage: 0.5,
-                      useShadowColorFromDataset: false,
-                    }}
-                    accessor={'percentage'}
-                    backgroundColor={'transparent'}
-                    paddingLeft={'15'}
-                    absolute
-                    style={styles.pieChart}
-                  />
-                </Animatable.View>
-              ) : (
-                <Animatable.View
-                  animation="fadeInUp"
-                  delay={400}
-                  style={styles.card}
-                >
-                  <Text style={styles.sectionTitle}>Prediction</Text>
-                  <Text style={styles.adviceText}>
-                    No prediction available for this match.
-                  </Text>
-                </Animatable.View>
-              )}
+              {/* Prediction Comparison Charts */}
+              {renderPredictionComparison(prediction.comparison)}
+            </Animatable.View>
+          ) : (
+            <Animatable.View
+              animation="fadeInUp"
+              delay={400}
+              style={styles.card}
+            >
+              <Text style={styles.sectionTitle}>Prediction</Text>
+              <Text style={styles.adviceText}>
+                No prediction available for this match.
+              </Text>
+            </Animatable.View>
+          )}
+
 
               {/* Best Odds Section */}
               {bestOdd && bestBookmaker ? (
