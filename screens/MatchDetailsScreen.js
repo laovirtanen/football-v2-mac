@@ -17,10 +17,7 @@ import {
   VictoryChart,
   VictoryPolarAxis,
   VictoryArea,
-  VictoryBar,
   VictoryGroup,
-  VictoryLabel,
-  VictoryAxis,
 } from 'victory-native';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -81,12 +78,13 @@ export default function MatchDetailsScreen({ route, navigation }) {
   const [homeShowMore, setHomeShowMore] = useState(false);
   const [awayShowMore, setAwayShowMore] = useState(false);
 
-  // Fetch fixture details on component mount
+  // Fetch fixture details on component mount and when fixtureId changes
   useEffect(() => {
     fetchFixtureDetails();
-  }, []);
+  }, [fixtureId]);
 
   const fetchFixtureDetails = async () => {
+    setLoading(true); // Start loading
     try {
       // Assuming apiClient returns data directly
       const data = await apiClient.get(`/fixtures/${fixtureId}/detailed`);
@@ -110,9 +108,8 @@ export default function MatchDetailsScreen({ route, navigation }) {
     } catch (error) {
       console.error(`Error fetching /fixtures/${fixtureId}/detailed:`, error);
       Alert.alert('Error', 'Unable to fetch match details.');
-      setLoading(false); // Ensure loading state is updated in case of error
     } finally {
-      setLoading(false);
+      setLoading(false); // End loading
     }
   };
 
@@ -331,7 +328,7 @@ export default function MatchDetailsScreen({ route, navigation }) {
             <MaterialCommunityIcons name="card" size={iconSize} color={colors.primary} />
           );
         }
-      case 'Substitution':
+      case 'subst':
         return (
           <MaterialCommunityIcons name="swap-horizontal" size={iconSize} color={colors.accent} />
         );
@@ -364,6 +361,8 @@ export default function MatchDetailsScreen({ route, navigation }) {
           const isHomeTeam = event.team_id === fixture.home_team?.team_id;
           const alignmentStyle = isHomeTeam ? styles.eventRowHome : styles.eventRowAway;
           const eventIcon = getEventIcon(event);
+          console.log('Event Type:', event.type);
+          console.log('Event Detail:', event.detail);
 
           return (
             <View key={index} style={[styles.eventRow, alignmentStyle]}>
@@ -399,9 +398,9 @@ export default function MatchDetailsScreen({ route, navigation }) {
       <View style={styles.statsTable}>
         {statisticTypes.map((statType, index) => (
           <View key={index} style={styles.statRow}>
-            <Text style={styles.statValue}>{stats.home[statType] || 'N/A'}</Text>
+            <Text style={styles.statValue}>{stats.home[statType] || '0'}</Text>
             <Text style={styles.statLabel}>{statType}</Text>
-            <Text style={styles.statValue}>{stats.away[statType] || 'N/A'}</Text>
+            <Text style={styles.statValue}>{stats.away[statType] || '0'}</Text>
           </View>
         ))}
       </View>
@@ -462,6 +461,8 @@ export default function MatchDetailsScreen({ route, navigation }) {
               width={screenWidth}
               height={400}
               domain={{ y: [0, 100] }}
+              padding={{ top: 50, bottom: 50, left: 50, right: 50 }} // Increased padding
+
             >
               <VictoryPolarAxis
                 dependentAxis
@@ -708,36 +709,35 @@ export default function MatchDetailsScreen({ route, navigation }) {
           ) : (
             // Match is upcoming, display predictions and odds
             <>
-                        {/* Prediction Section */}
-          {prediction ? (
-            <Animatable.View
-              animation="fadeInUp"
-              delay={400}
-              style={styles.card}
-            >
-              <Text style={styles.sectionTitle}>Prediction</Text>
-              <View style={styles.predictionAdviceContainer}>
-                <Text style={styles.adviceText}>
-                  {prediction.advice || 'No advice available'}
-                </Text>
-              </View>
+              {/* Prediction Section */}
+              {prediction ? (
+                <Animatable.View
+                  animation="fadeInUp"
+                  delay={400}
+                  style={styles.card}
+                >
+                  <Text style={styles.sectionTitle}>Prediction</Text>
+                  <View style={styles.predictionAdviceContainer}>
+                    <Text style={styles.adviceText}>
+                      {prediction.advice || 'No advice available'}
+                    </Text>
+                  </View>
 
-              {/* Prediction Comparison Charts */}
-              {renderPredictionComparison(prediction.comparison)}
-            </Animatable.View>
-          ) : (
-            <Animatable.View
-              animation="fadeInUp"
-              delay={400}
-              style={styles.card}
-            >
-              <Text style={styles.sectionTitle}>Prediction</Text>
-              <Text style={styles.adviceText}>
-                No prediction available for this match.
-              </Text>
-            </Animatable.View>
-          )}
-
+                  {/* Prediction Comparison Charts */}
+                  {renderPredictionComparison(prediction.comparison)}
+                </Animatable.View>
+              ) : (
+                <Animatable.View
+                  animation="fadeInUp"
+                  delay={400}
+                  style={styles.card}
+                >
+                  <Text style={styles.sectionTitle}>Prediction</Text>
+                  <Text style={styles.adviceText}>
+                    No prediction available for this match.
+                  </Text>
+                </Animatable.View>
+              )}
 
               {/* Best Odds Section */}
               {bestOdd && bestBookmaker ? (
@@ -840,18 +840,33 @@ export default function MatchDetailsScreen({ route, navigation }) {
                   <Text style={styles.formText}>
                     {`${item.date.substring(0, 10)} vs ${item.opponent} (${item.home_or_away})`}
                   </Text>
-                  <Text
-                    style={[
-                      styles.resultText,
-                      item.outcome === 'W'
-                        ? styles.winText
-                        : item.outcome === 'D'
-                        ? styles.drawText
-                        : styles.lossText,
-                    ]}
+                  {/* Wrap the result text in TouchableOpacity to make it clickable */}
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (item.fixture_id) {
+                        navigation.navigate('MatchDetails', {
+                          fixtureId: item.fixture_id,
+                        });
+                      } else {
+                        Alert.alert('Error', 'Fixture details are unavailable.');
+                      }
+                    }}
+                    style={styles.resultTouchable}
                   >
-                    {`${item.goals_for} - ${item.goals_against}`}
-                  </Text>
+                    <Text
+                      style={[
+                        styles.resultText,
+                        item.outcome === 'W'
+                          ? styles.winText
+                          : item.outcome === 'D'
+                          ? styles.drawText
+                          : styles.lossText,
+                      ]}
+                    >
+                      {`${item.goals_for} - ${item.goals_against}`}
+                    </Text>
+                    <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text} />
+                  </TouchableOpacity>
                 </Animatable.View>
               ))}
               {filterRecentForm(
@@ -937,18 +952,33 @@ export default function MatchDetailsScreen({ route, navigation }) {
                   <Text style={styles.formText}>
                     {`${item.date.substring(0, 10)} vs ${item.opponent} (${item.home_or_away})`}
                   </Text>
-                  <Text
-                    style={[
-                      styles.resultText,
-                      item.outcome === 'W'
-                        ? styles.winText
-                        : item.outcome === 'D'
-                        ? styles.drawText
-                        : styles.lossText,
-                    ]}
+                  {/* Wrap the result text in TouchableOpacity to make it clickable */}
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (item.fixture_id) {
+                        navigation.navigate('MatchDetails', {
+                          fixtureId: item.fixture_id,
+                        });
+                      } else {
+                        Alert.alert('Error', 'Fixture details are unavailable.');
+                      }
+                    }}
+                    style={styles.resultTouchable}
                   >
-                    {`${item.goals_for} - ${item.goals_against}`}
-                  </Text>
+                    <Text
+                      style={[
+                        styles.resultText,
+                        item.outcome === 'W'
+                          ? styles.winText
+                          : item.outcome === 'D'
+                          ? styles.drawText
+                          : styles.lossText,
+                      ]}
+                    >
+                      {`${item.goals_for} - ${item.goals_against}`}
+                    </Text>
+                    <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text} />
+                  </TouchableOpacity>
                 </Animatable.View>
               ))}
               {filterRecentForm(
@@ -970,7 +1000,7 @@ export default function MatchDetailsScreen({ route, navigation }) {
           </Animatable.View>
 
           {/* Team Statistics */}
-          {homeTeamStats && awayTeamStats && (
+          {!isMatchPlayed && homeTeamStats && awayTeamStats && (
             <Animatable.View
               animation="fadeInUp"
               delay={700}
@@ -1009,36 +1039,26 @@ export default function MatchDetailsScreen({ route, navigation }) {
             </Animatable.View>
           )}
 
-          {/* Match Statistics */}
-          {isMatchPlayed && matchStatistics && (
+          {/* Top Players */}
+          {!isMatchPlayed && (
             <Animatable.View
               animation="fadeInUp"
-              delay={800}
+              delay={900}
               style={styles.card}
             >
-              <Text style={styles.sectionTitle}>Match Statistics</Text>
-              {renderMatchStatistics(matchStatistics)}
+              <Text style={styles.sectionTitle}>Top Players</Text>
+              {/* Home Team Top Players */}
+              {renderTopPlayers(
+                homeTopPlayers,
+                fixture.home_team?.name || 'Home Team'
+              )}
+              {/* Away Team Top Players */}
+              {renderTopPlayers(
+                awayTopPlayers,
+                fixture.away_team?.name || 'Away Team'
+              )}
             </Animatable.View>
           )}
-
-          {/* Top Players */}
-          <Animatable.View
-            animation="fadeInUp"
-            delay={900}
-            style={styles.card}
-          >
-            <Text style={styles.sectionTitle}>Top Players</Text>
-            {/* Home Team Top Players */}
-            {renderTopPlayers(
-              homeTopPlayers,
-              fixture.home_team?.name || 'Home Team'
-            )}
-            {/* Away Team Top Players */}
-            {renderTopPlayers(
-              awayTopPlayers,
-              fixture.away_team?.name || 'Away Team'
-            )}
-          </Animatable.View>
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>

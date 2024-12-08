@@ -34,19 +34,43 @@ import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
 
 // Create navigators
-const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-// Stack navigators for each tab
+// Stack navigators for each tab (excluding MatchDetailsScreen)
 function HomeStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeMain" component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="MatchDetails" component={MatchDetailsScreen} options={{ title: 'Match Details' }} />
-      <Stack.Screen name="TeamDetails" component={TeamDetailsScreen} options={{ title: 'Team Details' }} />
-      <Stack.Screen name="PlayerProfile" component={PlayerProfileScreen} options={{ title: 'Player Profile' }} />
+      <Stack.Screen 
+        name="HomeMain" 
+        component={HomeScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="MatchDetails" 
+        component={MatchDetailsScreen} 
+        options={{ 
+          title: 'Match Details',
+          headerShown: true, // Enable header for back button
+        }} 
+      />
+      <Stack.Screen 
+        name="TeamDetails" 
+        component={TeamDetailsScreen} 
+        options={{ title: 'Team Details' }} 
+      />
+      <Stack.Screen 
+        name="PlayerProfile" 
+        component={PlayerProfileScreen} 
+        options={{ title: 'Player Profile' }} 
+      />
       {/* Add navigation to PlayerRankingsScreen from HomeStack */}
-      <Stack.Screen name="PlayerRankings" component={PlayerRankingsScreen} options={{ title: 'Player Rankings' }} />
+      <Stack.Screen 
+        name="PlayerRankings" 
+        component={PlayerRankingsScreen} 
+        options={{ title: 'Player Rankings' }} 
+      />
     </Stack.Navigator>
   );
 }
@@ -54,8 +78,21 @@ function HomeStack() {
 function LeagueStandingsStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="LeagueStandingsMain" component={LeagueStandingsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TeamDetails" component={TeamDetailsScreen} options={{ title: 'Team Details' }} />
+      <Stack.Screen 
+        name="LeagueStandingsMain" 
+        component={LeagueStandingsScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="TeamDetails" 
+        component={TeamDetailsScreen} 
+        options={{ title: 'Team Details' }} 
+      />
+      <Stack.Screen 
+        name="MatchDetails" 
+        component={MatchDetailsScreen} 
+        options={{ title: 'Match Details' }} 
+      />
     </Stack.Navigator>
   );
 }
@@ -63,8 +100,16 @@ function LeagueStandingsStack() {
 function RankingsStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="RankingsMain" component={PlayerRankingsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="PlayerProfile" component={PlayerProfileScreen} options={{ title: 'Player Profile' }} />
+      <Stack.Screen 
+        name="RankingsMain" 
+        component={PlayerRankingsScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="PlayerProfile" 
+        component={PlayerProfileScreen} 
+        options={{ title: 'Player Profile' }} 
+      />
     </Stack.Navigator>
   );
 }
@@ -72,10 +117,80 @@ function RankingsStack() {
 function FixturesStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="FixturesMain" component={FixturesScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="MatchDetails" component={MatchDetailsScreen} options={{ title: 'Match Details' }} />
-      <Stack.Screen name="TeamDetails" component={TeamDetailsScreen} options={{ title: 'Team Details' }} />
+      <Stack.Screen 
+        name="FixturesMain" 
+        component={FixturesScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="MatchDetails" 
+        component={MatchDetailsScreen} 
+        options={{ title: 'Match Details' }} 
+      />
+      <Stack.Screen 
+        name="TeamDetails" 
+        component={TeamDetailsScreen} 
+        options={{ title: 'Team Details' }} 
+      />
     </Stack.Navigator>
+  );
+}
+
+// Bottom Tab Navigator
+function BottomTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false, // Hide the header for tab screens
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          // Assign icons based on route name
+          switch (route.name) {
+            case 'Home':
+              iconName = 'home';
+              break;
+            case 'LeagueStandings':
+              iconName = 'format-list-numbered';
+              break;
+            case 'Rankings':
+              iconName = 'star';
+              break;
+            case 'Fixtures':
+              iconName = 'calendar';
+              break;
+            default:
+              iconName = 'circle';
+          }
+
+          return (
+            <MaterialCommunityIcons name={iconName} color={color} size={size} />
+          );
+        },
+        tabBarActiveTintColor: '#ff416c', // Example customization
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+          backgroundColor: '#0f0c29', // Example background color
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen
+        name="LeagueStandings"
+        component={LeagueStandingsStack}
+        options={{ title: 'League Standings' }}
+      />
+      <Tab.Screen
+        name="Rankings"
+        component={RankingsStack}
+        options={{ title: 'Rankings' }}
+      />
+      <Tab.Screen
+        name="Fixtures"
+        component={FixturesStack}
+        options={{ title: 'Fixtures' }}
+      />
+    </Tab.Navigator>
   );
 }
 
@@ -155,63 +270,12 @@ const App = () => {
   return (
     <PaperProvider theme={theme} settings={{ isV3: true }}>
       <NavigationContainer theme={theme}>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            headerShown: false, // Hide the header for tab screens
-            tabBarIcon: ({ color, size }) => {
-              let iconName;
-
-              // Assign icons based on route name
-              switch (route.name) {
-                case 'Home':
-                  iconName = 'home';
-                  break;
-                case 'LeagueStandings':
-                  iconName = 'format-list-numbered';
-                  break;
-                case 'Rankings':
-                  iconName = 'star';
-                  break;
-                case 'Fixtures':
-                  iconName = 'calendar';
-                  break;
-                default:
-                  iconName = 'circle';
-              }
-
-              return (
-                <MaterialCommunityIcons name={iconName} color={color} size={size} />
-              );
-            },
-            tabBarActiveTintColor: theme.colors.primary,
-            tabBarInactiveTintColor: 'gray',
-            tabBarStyle: {
-              backgroundColor: theme.colors.background,
-            },
-          })}
-        >
-          <Tab.Screen name="Home" component={HomeStack} />
-          <Tab.Screen
-            name="LeagueStandings"
-            component={LeagueStandingsStack}
-            options={{ title: 'League Standings' }}
-          />
-          <Tab.Screen
-            name="Rankings"
-            component={RankingsStack}
-            options={{ title: 'Rankings' }}
-          />
-          <Tab.Screen
-            name="Fixtures"
-            component={FixturesStack}
-            options={{ title: 'Fixtures' }}
-          />
-        </Tab.Navigator>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="Main" component={BottomTabs} />
+        </RootStack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
 };
 
 export default App;
-
-

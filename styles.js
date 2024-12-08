@@ -149,19 +149,19 @@ const createStyles = (colors) =>
       flex: 1,
     },
     vsContainer: {
-      flex: 0.2,
+      flex: 0.4,
       alignItems: 'center',
       justifyContent: 'center',
     },
     teamLogoLarge: {
-      width: 80,
-      height: 80,
+      width: 70,
+      height: 70,
       resizeMode: 'contain',
       marginBottom: 8,
     },
     placeholderLogo: {
-      width: 80,
-      height: 80,
+      width: 70,
+      height: 70,
       backgroundColor: colors.border || '#ccc',
       marginBottom: 8,
       borderRadius: 40,
@@ -1009,12 +1009,12 @@ const createStyles = (colors) =>
     // Match Events Styles
     // ----------------------------------------
     eventsContainer: {
-      marginTop: 8,
+      marginTop: 8, // Optional: Adjust if needed
       width: '100%',
     },
     eventRow: {
       flexDirection: 'row',
-      marginVertical: 8,
+      marginVertical: 4, // Reduced from 8 to 4
     },
     eventRowHome: {
       justifyContent: 'flex-start',
@@ -1025,37 +1025,37 @@ const createStyles = (colors) =>
     eventBubble: {
       maxWidth: '75%',
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      borderRadius: 12,
-      padding: 10,
+      borderRadius: 10, // Optional: Reduced from 12 to 10
+      padding: 8, // Reduced from 10 to 8
     },
     eventHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 4,
+      marginBottom: 2, // Reduced from 4 to 2
     },
     eventMinute: {
-      fontSize: 12,
+      fontSize: 10, // Reduced from 12 to 10
       color: colors.textSecondary || '#ccc',
-      marginRight: 8,
+      marginRight: 6, // Optional: Adjusted from 8 to 6
       fontFamily: 'Montserrat_400Regular',
     },
     eventPlayer: {
-      fontSize: 14,
+      fontSize: 12, // Reduced from 14 to 12
       color: colors.text || '#fff',
       fontFamily: 'Montserrat_700Bold',
     },
     eventAssist: {
-      fontSize: 12,
+      fontSize: 10, // Reduced from 12 to 10
       color: colors.textSecondary || '#ccc',
       fontFamily: 'Montserrat_400Regular',
     },
     eventDetail: {
-      fontSize: 12,
+      fontSize: 10, // Reduced from 12 to 10
       color: colors.textSecondary || '#ccc',
       fontFamily: 'Montserrat_400Regular',
     },
     noEventsText: {
-      fontSize: 16,
+      fontSize: 14, // Reduced from 16 to 14
       color: colors.textSecondary || '#ccc',
       textAlign: 'center',
       fontFamily: 'Montserrat_400Regular',
@@ -1159,9 +1159,20 @@ const createStyles = (colors) =>
       textAlign: 'center',
       fontFamily: 'Montserrat_700Bold',
     },
+    resultTouchable: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
 
-
-        
+    backButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 10,
+      position: 'absolute',
+      top: 40, // Adjust based on device and header height
+      left: 10,
+      zIndex: 1,
+    },
 
       });
 
