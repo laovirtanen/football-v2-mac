@@ -430,40 +430,39 @@ const createStyles = (colors) =>
     fixturesItemContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-around',
+      justifyContent: 'space-evenly', // Changed from 'space-around' to 'space-between'
       paddingVertical: 8,
       width: '100%',
     },
     time: {
-      fontSize: 16,
+      fontSize: 12,
       color: colors.text || '#fff',
       textAlign: 'center',
-      minWidth: 70,
+      minWidth: 50,
       fontFamily: 'Montserrat_400Regular',
     },
     teamContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      flexShrink: 1,
-      maxWidth: 100,
+      flex: 1,
+      maxWidth: 100, // Changed from 'maxWidth: 100' to 'flex: 1'
     },
     teamLogoSmall: {
-      width: 32,
-      height: 32,
+      width: 26,
+      height: 26,
       resizeMode: 'contain',
-      marginRight: 8,
+      marginRight: 5,
     },
     vsTextSmall: {
-      fontSize: 18,
+      fontSize: 14, // Reduced from 18
       color: colors.text || '#fff',
       textAlign: 'center',
       fontFamily: 'Montserrat_700Bold',
     },
     teamNameSmall: {
-      fontSize: 14,
+      fontSize: 14, // Optionally reduce to 12 if needed
       fontWeight: 'bold',
       color: colors.text || '#fff',
-      flexShrink: 1,
       fontFamily: 'Montserrat_700Bold',
     },
     dropDownPicker: {
