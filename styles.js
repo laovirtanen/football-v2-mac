@@ -12,8 +12,8 @@ const createStyles = (colors) =>
     // ----------------------------------------
     container: {
       flex: 1,
-      paddingHorizontal: 16, // Add horizontal padding
-      paddingVertical: 8, // Optional vertical padding
+      paddingHorizontal: 16, 
+      paddingVertical: 8, 
       backgroundColor: colors.background || '#0f0c29',
     },
     scrollContainer: {
@@ -169,7 +169,7 @@ const createStyles = (colors) =>
     scoreText: {
       color: colors.accent,
       fontFamily: 'Montserrat_700Bold',
-      fontSize: 28, // Increased font size for better visibility
+      fontSize: 28, 
       textAlign: 'center',
     },
 
@@ -430,7 +430,7 @@ const createStyles = (colors) =>
     fixturesItemContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-evenly', // Changed from 'space-around' to 'space-between'
+      justifyContent: 'space-evenly', 
       paddingVertical: 8,
       width: '100%',
     },
@@ -445,7 +445,7 @@ const createStyles = (colors) =>
       flexDirection: 'row',
       alignItems: 'center',
       flex: 1,
-      maxWidth: 100, // Changed from 'maxWidth: 100' to 'flex: 1'
+      maxWidth: 100, 
     },
     teamLogoSmall: {
       width: 26,
@@ -454,13 +454,13 @@ const createStyles = (colors) =>
       marginRight: 5,
     },
     vsTextSmall: {
-      fontSize: 14, // Reduced from 18
+      fontSize: 14, 
       color: colors.text || '#fff',
       textAlign: 'center',
       fontFamily: 'Montserrat_700Bold',
     },
     teamNameSmall: {
-      fontSize: 14, // Optionally reduce to 12 if needed
+      fontSize: 14, 
       fontWeight: 'bold',
       color: colors.text || '#fff',
       fontFamily: 'Montserrat_700Bold',
@@ -506,7 +506,6 @@ const createStyles = (colors) =>
       width: '100%',
     },
     
-    // If you have multiple DropDownPickers, adjust zIndex accordingly
     dropDownWrapperSecond: {
       zIndex: 1000,
       elevation: 1000,
@@ -528,7 +527,7 @@ const createStyles = (colors) =>
       borderBottomColor: colors.border || '#ccc',
       backgroundColor: colors.surface || 'rgba(255, 255, 255, 0.1)',
       width: '100%',
-      paddingHorizontal: 16, // Added padding to prevent text from touching edges
+      paddingHorizontal: 16, 
     },
     headerRank: {
       fontSize: 14,
@@ -593,7 +592,7 @@ const createStyles = (colors) =>
       borderBottomWidth: 1,
       borderBottomColor: colors.border || '#ccc',
       width: '100%',
-      paddingHorizontal: 16, // Added padding to align items properly
+      paddingHorizontal: 16, 
     },
     standingsRank: {
       fontSize: 16,
@@ -660,7 +659,7 @@ const createStyles = (colors) =>
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
       borderRadius: 20,
       marginRight: 8,
-      marginBottom: 8, // Add margin bottom for spacing between rows
+      marginBottom: 8, 
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -1008,12 +1007,12 @@ const createStyles = (colors) =>
     // Match Events Styles
     // ----------------------------------------
     eventsContainer: {
-      marginTop: 8, // Optional: Adjust if needed
+      marginTop: 8, 
       width: '100%',
     },
     eventRow: {
       flexDirection: 'row',
-      marginVertical: 4, // Reduced from 8 to 4
+      marginVertical: 4, 
     },
     eventRowHome: {
       justifyContent: 'flex-start',
@@ -1024,37 +1023,37 @@ const createStyles = (colors) =>
     eventBubble: {
       maxWidth: '75%',
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      borderRadius: 10, // Optional: Reduced from 12 to 10
-      padding: 8, // Reduced from 10 to 8
+      borderRadius: 10, 
+      padding: 8, 
     },
     eventHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 2, // Reduced from 4 to 2
+      marginBottom: 2, 
     },
     eventMinute: {
-      fontSize: 10, // Reduced from 12 to 10
+      fontSize: 10, 
       color: colors.textSecondary || '#ccc',
-      marginRight: 6, // Optional: Adjusted from 8 to 6
+      marginRight: 6, 
       fontFamily: 'Montserrat_400Regular',
     },
     eventPlayer: {
-      fontSize: 12, // Reduced from 14 to 12
+      fontSize: 12, 
       color: colors.text || '#fff',
       fontFamily: 'Montserrat_700Bold',
     },
     eventAssist: {
-      fontSize: 10, // Reduced from 12 to 10
+      fontSize: 10, 
       color: colors.textSecondary || '#ccc',
       fontFamily: 'Montserrat_400Regular',
     },
     eventDetail: {
-      fontSize: 10, // Reduced from 12 to 10
+      fontSize: 10,
       color: colors.textSecondary || '#ccc',
       fontFamily: 'Montserrat_400Regular',
     },
     noEventsText: {
-      fontSize: 14, // Reduced from 16 to 14
+      fontSize: 14, 
       color: colors.textSecondary || '#ccc',
       textAlign: 'center',
       fontFamily: 'Montserrat_400Regular',
@@ -1168,7 +1167,7 @@ const createStyles = (colors) =>
       alignItems: 'center',
       padding: 10,
       position: 'absolute',
-      top: 40, // Adjust based on device and header height
+      top: 40, 
       left: 10,
       zIndex: 1,
     },

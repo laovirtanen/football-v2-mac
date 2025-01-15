@@ -17,16 +17,13 @@ import * as Animatable from 'react-native-animatable';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 
 export default function TeamDetailsScreen({ route }) {
-  // Load custom fonts
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_700Bold,
   });
 
-  // Import styles from updated styles.js
   const styles = createStyles({});
 
-  // State variables
   const { teamId } = route.params;
   const [team, setTeam] = useState(null);
   const [stats, setStats] = useState(null);
@@ -51,14 +48,12 @@ export default function TeamDetailsScreen({ route }) {
     }
   };
 
-  // useEffect hooks
   useEffect(() => {
     fetchTeamDetails();
   }, []);
 
-  // Ensure all hooks and functions are called before this conditional return
   if (!fontsLoaded) {
-    return null; // Optionally, display a loading indicator
+    return null; 
   }
 
   if (loading) {

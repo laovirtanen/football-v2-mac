@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation }) {
   });
 
   if (!fontsLoaded) {
-    return null; // Optionally, display a loading indicator
+    return null; 
   }
 
   return (
@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
       <SafeAreaView style={styles.safeArea}>
         <Animatable.View animation="fadeInDown" delay={200} style={styles.header}>
           <Image
-            source={require('../assets/fd_logo.png')} // Ensure you have a logo image
+            source={require('../assets/fd_logo.png')} 
             style={styles.logo}
           />
           <Text style={styles.title}>Data Driven decisions</Text>

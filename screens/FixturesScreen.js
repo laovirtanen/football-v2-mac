@@ -1,5 +1,3 @@
-// screens/FixturesScreen.js
-
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -11,7 +9,6 @@ import {
   Image,
 } from 'react-native';
 import apiClient from '../api/apiClient';
-// Removed DropDownPicker import
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import createStyles from '../styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,16 +22,13 @@ import {
 import { IconButton } from 'react-native-paper';
 
 export default function FixturesScreen({ navigation }) {
-  // Load custom fonts
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_700Bold,
   });
 
-  // Import styles from updated styles.js
   const styles = createStyles({});
 
-  // State variables
   const [fixtures, setFixtures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [leagueId, setLeagueId] = useState(39);
@@ -42,11 +36,7 @@ export default function FixturesScreen({ navigation }) {
   const [leagues, setLeagues] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // Removed DropDownPicker related states
-  // const [leagueOpen, setLeagueOpen] = useState(false);
-  // const [leagueItems, setLeagueItems] = useState([]);
 
-  // Fetch leagues and include country flags
   const fetchLeagues = async () => {
     try {
       const data = await apiClient.get('/leagues/');
@@ -57,7 +47,6 @@ export default function FixturesScreen({ navigation }) {
     }
   };
 
-  // Fetch fixtures for the selected league and date
   const fetchFixtures = async () => {
     setLoading(true);
     try {
@@ -75,7 +64,6 @@ export default function FixturesScreen({ navigation }) {
       );
 
       data.sort((a, b) => new Date(a.date) - new Date(b.date));
-
       setFixtures(data);
     } catch (error) {
       console.error('Error fetching fixtures:', error);
@@ -85,7 +73,6 @@ export default function FixturesScreen({ navigation }) {
     }
   };
 
-  // useEffect hooks
   useEffect(() => {
     fetchLeagues();
   }, []);
@@ -94,9 +81,8 @@ export default function FixturesScreen({ navigation }) {
     fetchFixtures();
   }, [leagueId, selectedDate]);
 
-  // Ensure all hooks and functions are called before this conditional return
   if (!fontsLoaded) {
-    return null; // Optionally, display a loading indicator
+    return null;
   }
 
   const showDatePicker = () => {
@@ -117,16 +103,10 @@ export default function FixturesScreen({ navigation }) {
   };
 
   const renderItem = ({ item }) => (
-    <Animatable.View
-      animation="fadeInUp"
-      delay={200}
-      style={styles.fixtureCardWrapper}
-    >
+    <Animatable.View animation="fadeInUp" delay={200} style={styles.fixtureCardWrapper}>
       <TouchableOpacity
         style={styles.fixtureCard}
-        onPress={() =>
-          navigation.navigate('MatchDetails', { fixtureId: item.fixture_id })
-        }
+        onPress={() => navigation.navigate('MatchDetails', { fixtureId: item.fixture_id })}
       >
         <View style={styles.fixturesItemContainer}>
           <Text style={styles.time}>
@@ -173,17 +153,11 @@ export default function FixturesScreen({ navigation }) {
       style={styles.background}
     >
       <SafeAreaView style={styles.safeArea}>
-        {/* Header Section */}
-        <Animatable.View
-          animation="fadeInDown"
-          delay={200}
-          style={styles.headerContainer}
-        >
+        <Animatable.View animation="fadeInDown" delay={200} style={styles.headerContainer}>
           <Text style={styles.sectionTitle}>Fixtures</Text>
         </Animatable.View>
 
         <View style={styles.container}>
-          {/* League Selector */}
           <View style={styles.leagueSelectorContainer}>
             {leagues.map((league) => (
               <TouchableOpacity
@@ -204,8 +178,7 @@ export default function FixturesScreen({ navigation }) {
                   <Text
                     style={[
                       styles.leagueButtonText,
-                      league.league_id === leagueId &&
-                        styles.leagueButtonTextSelected,
+                      league.league_id === leagueId && styles.leagueButtonTextSelected,
                     ]}
                   >
                     {league.name}
@@ -215,11 +188,7 @@ export default function FixturesScreen({ navigation }) {
             ))}
           </View>
 
-          {/* Date Picker */}
-          <TouchableOpacity
-            style={styles.datePickerContainer}
-            onPress={showDatePicker}
-          >
+          <TouchableOpacity style={styles.datePickerContainer} onPress={showDatePicker}>
             <IconButton icon="calendar" size={24} color="#ff416c" />
             <Text style={styles.dateText}>{selectedDate.toDateString()}</Text>
           </TouchableOpacity>
@@ -247,9 +216,7 @@ export default function FixturesScreen({ navigation }) {
               contentContainerStyle={{ paddingBottom: 20 }}
             />
           ) : (
-            <Text style={styles.noFixturesText}>
-              No fixtures found for this date.
-            </Text>
+            <Text style={styles.noFixturesText}>No fixtures found for this date.</Text>
           )}
         </View>
       </SafeAreaView>

@@ -24,10 +24,8 @@ export default function PlayerProfileScreen({ route }) {
     Montserrat_700Bold,
   });
 
-  // Import styles from updated styles.js
   const styles = createStyles({});
 
-  // State variables
   const { playerId } = route.params;
   const [player, setPlayer] = useState(null);
   const [statistics, setStatistics] = useState(null);
@@ -41,7 +39,7 @@ export default function PlayerProfileScreen({ route }) {
         `/player_statistics/?player_id=${playerId}&season_year=2024`
       );
       setPlayer(playerData);
-      setStatistics(statsData[0]); // Assuming the first item is the relevant one
+      setStatistics(statsData[0]); // First item in the array
     } catch (error) {
       console.error('Error fetching player details:', error);
       Alert.alert('Error', 'Unable to fetch player details.');
@@ -50,14 +48,12 @@ export default function PlayerProfileScreen({ route }) {
     }
   };
 
-  // useEffect hooks
   useEffect(() => {
     fetchPlayerDetails();
   }, []);
 
-  // Ensure all hooks and functions are called before this conditional return
   if (!fontsLoaded) {
-    return null; // Optionally, display a loading indicator
+    return null; 
   }
 
   if (loading) {

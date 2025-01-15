@@ -16,7 +16,6 @@ import {
 } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// Import your screen components
 import HomeScreen from './screens/HomeScreen';
 import LeagueStandingsScreen from './screens/LeagueStandingsScreen';
 import PlayerRankingsScreen from './screens/PlayerRankingsScreen';
@@ -65,7 +64,6 @@ function HomeStack() {
         component={PlayerProfileScreen} 
         options={{ title: 'Player Profile' }} 
       />
-      {/* Add navigation to PlayerRankingsScreen from HomeStack */}
       <Stack.Screen 
         name="PlayerRankings" 
         component={PlayerRankingsScreen} 
@@ -167,10 +165,10 @@ function BottomTabs() {
             <MaterialCommunityIcons name={iconName} color={color} size={size} />
           );
         },
-        tabBarActiveTintColor: '#ff416c', // Example customization
+        tabBarActiveTintColor: '#ff416c',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
-          backgroundColor: '#0f0c29', // Example background color
+          backgroundColor: '#0f0c29', 
         },
       })}
     >
@@ -244,7 +242,6 @@ const App = () => {
     },
   };
 
-  // Define font configuration
   const fontConfig = {
     fontFamily: 'Roboto',
     fonts: {
@@ -255,7 +252,6 @@ const App = () => {
         lineHeight: 20,
         letterSpacing: 0.1,
       },
-      // Add other variants if necessary
     },
   };
 

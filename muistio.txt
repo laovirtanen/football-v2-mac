@@ -1,0 +1,13 @@
+        async with httpx.AsyncClient() as client:
+            # **Choose Mode: Initial Full Season or Incremental Update**
+            # Uncomment the desired mode.
+
+            ## **Initial Run: Full Season Ingestion**
+            # Define the date range for the entire season
+            start_date = datetime(2024, 7, 1, tzinfo=timezone.utc)
+            end_date = datetime(2025, 5, 31, tzinfo=timezone.utc)
+            
+            ## **Subsequent Runs: Rolling Window Ingestion**
+            # Uncomment the following lines for incremental ingestion
+            # start_date = datetime.now(timezone.utc) - timedelta(weeks=1)
+            # end_date = datetime.now(timezone.utc) + timedelta(weeks=1)

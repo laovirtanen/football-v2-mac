@@ -1,8 +1,7 @@
 // api/apiClient.js
 import { Alert } from "react-native";
 
-// Replace 'YOUR_LOCAL_IP' with your actual local IP address
-const BASE_URL = "http://192.168.8.96:8000"; // e.g., 'http://192.168.1.100:8000'
+const BASE_URL = "http://192.168.8.113:8000"; 
 
 const apiClient = {
   get: async (endpoint) => {
@@ -18,7 +17,6 @@ const apiClient = {
       throw error;
     }
   },
-  // Add other methods (post, put, delete) as needed
 };
 
 export default apiClient;

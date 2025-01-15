@@ -51,10 +51,8 @@ export default function MatchDetailsScreen({ route, navigation }) {
     danger: '#FF4500',
   };
 
-  // Import styles from updated styles.js
   const styles = createStyles(colors);
 
-  // State variables
   const { fixtureId } = route.params;
   const [fixture, setFixture] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,15 +64,12 @@ export default function MatchDetailsScreen({ route, navigation }) {
   const [homeTopPlayers, setHomeTopPlayers] = useState([]);
   const [awayTopPlayers, setAwayTopPlayers] = useState([]);
 
-  // New state variables for match statistics and events
   const [matchStatistics, setMatchStatistics] = useState(null);
   const [matchEvents, setMatchEvents] = useState([]);
 
-  // Recent form filter states
   const [homeFormFilter, setHomeFormFilter] = useState('All');
   const [awayFormFilter, setAwayFormFilter] = useState('All');
 
-  // Show more state for recent form
   const [homeShowMore, setHomeShowMore] = useState(false);
   const [awayShowMore, setAwayShowMore] = useState(false);
 
@@ -84,13 +79,12 @@ export default function MatchDetailsScreen({ route, navigation }) {
   }, [fixtureId]);
 
   const fetchFixtureDetails = async () => {
-    setLoading(true); // Start loading
+    setLoading(true); 
     try {
-      // Assuming apiClient returns data directly
       const data = await apiClient.get(`/fixtures/${fixtureId}/detailed`);
       setFixture(data);
 
-      // Set data
+    
       setHomeRecentForm(data.home_recent_form || []);
       setAwayRecentForm(data.away_recent_form || []);
       setHomeTeamStats(data.home_team_stats);
@@ -98,11 +92,9 @@ export default function MatchDetailsScreen({ route, navigation }) {
       setHomeTopPlayers(data.home_top_players);
       setAwayTopPlayers(data.away_top_players);
 
-      // Set match statistics and events if available
       setMatchStatistics(data.match_statistics || null);
       setMatchEvents(data.match_events || []);
 
-      // Log the prediction and comparison data
       console.log('Prediction Data:', data.prediction);
       console.log('Comparison Data:', data.prediction?.comparison);
     } catch (error) {
@@ -284,7 +276,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
                 />
                 <Text style={styles.statText}>{player.goals || 0} Goals</Text>
               </View>
-              {/* Add more stats if available */}
             </View>
           </Animatable.View>
         ))}
@@ -448,7 +439,7 @@ export default function MatchDetailsScreen({ route, navigation }) {
     // Prepare data for bar charts
     const barData = radarData;
 
-    const screenWidth = Dimensions.get('window').width - 64; // Adjust for padding
+    const screenWidth = Dimensions.get('window').width - 64; 
 
     return (
       <View style={styles.predictionContainer}>
@@ -461,7 +452,7 @@ export default function MatchDetailsScreen({ route, navigation }) {
               width={screenWidth}
               height={400}
               domain={{ y: [0, 100] }}
-              padding={{ top: 50, bottom: 50, left: 50, right: 50 }} // Increased padding
+              padding={{ top: 50, bottom: 50, left: 50, right: 50 }} 
 
             >
               <VictoryPolarAxis
@@ -554,9 +545,8 @@ export default function MatchDetailsScreen({ route, navigation }) {
     );
   };
 
-  // Ensure that the conditional return comes after all hooks and functions
   if (!fontsLoaded) {
-    return null; // Optionally, display a loading indicator
+    return null; 
   }
 
   if (loading) {
@@ -682,7 +672,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
             </Text>
           </Animatable.View>
 
-          {/* Conditional Rendering Based on Match Status */}
           {isMatchPlayed ? (
             // Match has been played, display results and statistics
             <>
@@ -773,7 +762,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
             style={styles.card}
           >
             <Text style={styles.sectionTitle}>Recent Form</Text>
-            {/* Home Team Recent Form */}
             <Text style={styles.subSectionTitle}>
               {fixture.home_team?.name || 'Home Team'}
             </Text>
@@ -885,7 +873,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
                 </TouchableOpacity>
               )}
             </View>
-            {/* Away Team Recent Form */}
             <Text style={styles.subSectionTitle}>
               {fixture.away_team?.name || 'Away Team'}
             </Text>
@@ -952,7 +939,6 @@ export default function MatchDetailsScreen({ route, navigation }) {
                   <Text style={styles.formText}>
                     {`${item.date.substring(0, 10)} vs ${item.opponent} (${item.home_or_away})`}
                   </Text>
-                  {/* Wrap the result text in TouchableOpacity to make it clickable */}
                   <TouchableOpacity
                     onPress={() => {
                       if (item.fixture_id) {
